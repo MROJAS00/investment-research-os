@@ -28,30 +28,21 @@ export function DashboardView() {
   const theses = recentTheses(state.ideas);
   const events = calendarEntries(state).slice(0, 8);
 
-  const cards = [
+  const supporting = [
     {
       label: "Active ideas",
       value: metrics.activeIdeas,
-      detail: "Excludes invested and rejected",
       href: "/pipeline",
     },
     {
       label: "Deep research",
       value: metrics.deepResearch,
-      detail: "In deep-research stage",
       href: "/pipeline?stage=deep_research",
     },
     {
       label: "Upcoming IC",
       value: metrics.upcomingCommittee,
-      detail: "Sessions still ahead",
       href: "/committee",
-    },
-    {
-      label: "Awaiting action",
-      value: metrics.awaitingAction,
-      detail: "Overdue research questions",
-      href: "/pipeline?overdue=1",
     },
   ];
 
@@ -63,38 +54,52 @@ export function DashboardView() {
         description="What needs a portfolio manager’s attention today. Every count is calculated from the ideas, questions, and meetings in this workspace."
       />
 
-      <Surface className="overflow-hidden">
-        <div className="grid sm:grid-cols-2 xl:grid-cols-4">
-          {cards.map((card) => (
+      {/* Asymmetric blotter: one dominant figure + inline ticker — not a 4-up card grid */}
+      <div className="ticker-strip flex flex-col gap-4 px-3 py-3 sm:flex-row sm:items-end sm:gap-8 sm:px-4">
+        <Link
+          href="/pipeline?overdue=1"
+          className="group min-w-0 sm:max-w-xs sm:border-r sm:border-rule sm:pr-8"
+        >
+          <p className="font-mono text-[10px] tracking-[0.1em] text-muted-foreground uppercase">
+            Awaiting analyst action
+          </p>
+          <p className="mt-1 font-heading text-[3.25rem] leading-none font-semibold tabular-nums tracking-[-0.04em] text-primary group-hover:underline group-hover:decoration-1 group-hover:underline-offset-4">
+            {metrics.awaitingAction}
+          </p>
+          <p className="mt-2 font-serif text-[13px] leading-5 text-foreground/70">
+            Active ideas with a research question past its due date.
+          </p>
+        </Link>
+        <div className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-6 gap-y-2 sm:pb-1">
+          {supporting.map((item) => (
             <Link
-              key={card.label}
-              href={card.href}
-              className="metric-cell blotter-row block px-4 py-3 focus-visible:outline-none"
+              key={item.label}
+              href={item.href}
+              className="inline-flex items-baseline gap-2 border-b border-transparent hover:border-foreground/40"
             >
-              <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
-                {card.label}
-              </p>
-              <p className="mt-1 font-heading text-[1.75rem] leading-none font-semibold tabular-nums tracking-tight">
-                {card.value}
-              </p>
-              <p className="mt-1.5 text-[12px] leading-4 text-muted-foreground">{card.detail}</p>
+              <span className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
+                {item.label}
+              </span>
+              <span className="font-heading text-[1.35rem] font-semibold tabular-nums leading-none">
+                {item.value}
+              </span>
             </Link>
           ))}
         </div>
-      </Surface>
+      </div>
 
-      <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1.45fr)_minmax(0,0.85fr)]">
+      <div className="mt-7 grid gap-8 xl:grid-cols-[minmax(0,1.55fr)_minmax(0,0.8fr)]">
         <section className="min-w-0">
           <SectionLabel>Priority attention</SectionLabel>
           <Surface className="overflow-hidden">
             {attention.length === 0 ? (
-              <p className="px-4 py-8 text-sm text-muted-foreground">
+              <p className="px-4 py-8 font-serif text-sm text-muted-foreground">
                 Nothing in the current dataset trips a review, earnings, entry, or missing-document rule.
               </p>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-[13px]">
-                  <thead className="border-b border-rule text-left font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
+                  <thead className="border-b border-foreground/20 text-left font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
                     <tr>
                       <th className="px-3 py-2 font-medium">Company</th>
                       <th className="px-3 py-2 font-medium">Reason</th>
@@ -108,11 +113,11 @@ export function DashboardView() {
                       const owner = memberById(state, item.ownerId);
                       if (!idea) return null;
                       return (
-                        <tr key={item.id} className="blotter-row border-b border-border/80 last:border-0">
+                        <tr key={item.id} className="blotter-row border-b border-rule/70 last:border-0">
                           <td className="px-3 py-2.5 align-top">
                             <Link
                               href={`/companies/${idea.id}`}
-                              className="font-medium text-foreground hover:text-primary"
+                              className="font-heading text-[15px] font-semibold tracking-[-0.015em] hover:text-primary"
                             >
                               {idea.companyName}
                             </Link>
@@ -120,10 +125,10 @@ export function DashboardView() {
                               {idea.ticker}
                             </div>
                           </td>
-                          <td className="max-w-md px-3 py-2.5 align-top whitespace-normal text-muted-foreground">
+                          <td className="max-w-md px-3 py-2.5 align-top font-serif text-[13px] leading-5 whitespace-normal text-foreground/75">
                             {item.reason}
                           </td>
-                          <td className="px-3 py-2.5 align-top whitespace-nowrap">
+                          <td className="px-3 py-2.5 align-top whitespace-nowrap font-serif text-[13px]">
                             {owner?.name ?? "—"}
                           </td>
                           <td className="px-3 py-2.5 align-top">
@@ -141,60 +146,56 @@ export function DashboardView() {
 
         <section className="min-w-0">
           <SectionLabel>Upcoming events</SectionLabel>
-          <Surface>
-            <ul className="divide-y divide-border/80">
-              {events.map((event) => (
-                <li key={event.id} className="blotter-row px-3 py-2.5">
-                  <div className="flex items-baseline justify-between gap-3">
-                    <p className="text-[13px] font-medium">
-                      {event.companyId ? (
-                        <Link href={`/companies/${event.companyId}`} className="hover:text-primary">
-                          {event.title}
-                        </Link>
-                      ) : event.meetingId ? (
-                        <Link href="/committee" className="hover:text-primary">
-                          {event.title}
-                        </Link>
-                      ) : (
-                        event.title
-                      )}
-                    </p>
-                    <time className="shrink-0 font-mono text-[11px] text-muted-foreground tabular-nums">
-                      {formatDate(event.date)}
-                    </time>
-                  </div>
-                  <p className="mt-0.5 text-[12px] text-muted-foreground">
-                    {EVENT_KIND_LABELS[event.kind]}
-                    {event.overdue ? " · Overdue" : ""}
-                    {event.detail ? ` · ${event.detail}` : ""}
+          <ul className="divide-y divide-rule border-y border-rule">
+            {events.map((event) => (
+              <li key={event.id} className="blotter-row px-1 py-2.5">
+                <div className="flex items-baseline justify-between gap-3">
+                  <p className="font-heading text-[15px] font-semibold tracking-[-0.01em]">
+                    {event.companyId ? (
+                      <Link href={`/companies/${event.companyId}`} className="hover:text-primary">
+                        {event.title}
+                      </Link>
+                    ) : event.meetingId ? (
+                      <Link href="/committee" className="hover:text-primary">
+                        {event.title}
+                      </Link>
+                    ) : (
+                      event.title
+                    )}
                   </p>
-                </li>
-              ))}
-            </ul>
-          </Surface>
+                  <time className="shrink-0 font-mono text-[11px] text-muted-foreground tabular-nums">
+                    {formatDate(event.date)}
+                  </time>
+                </div>
+                <p className="mt-0.5 font-serif text-[12.5px] text-muted-foreground">
+                  {EVENT_KIND_LABELS[event.kind]}
+                  {event.overdue ? " · Overdue" : ""}
+                  {event.detail ? ` · ${event.detail}` : ""}
+                </p>
+              </li>
+            ))}
+          </ul>
         </section>
       </div>
 
-      <section className="mt-6">
+      <section className="mt-8">
         <SectionLabel>Research pipeline</SectionLabel>
-        <Surface className="overflow-hidden">
-          <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7">
-            {ACTIVE_STAGES.map((stage) => (
-              <StageCount key={stage} stage={stage} count={counts[stage]} />
-            ))}
-          </div>
-        </Surface>
-        <p className="mt-2 text-[12px] text-muted-foreground">
+        <div className="ticker-strip flex flex-wrap items-baseline gap-x-5 gap-y-2 px-3 py-2.5">
+          {ACTIVE_STAGES.map((stage) => (
+            <StageCount key={stage} stage={stage} count={counts[stage]} />
+          ))}
+        </div>
+        <p className="mt-2 font-serif text-[12.5px] text-muted-foreground">
           Historical outcomes: {counts.invested} invested, {counts.rejected} rejected. Those are filters, not active columns.
         </p>
       </section>
 
-      <section className="mt-6 min-w-0">
+      <section className="mt-8 min-w-0">
         <SectionLabel>Recently updated theses</SectionLabel>
         <Surface className="overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-[13px]">
-              <thead className="border-b border-rule text-left font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
+              <thead className="border-b border-foreground/20 text-left font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
                 <tr>
                   <th className="px-3 py-2 font-medium">Company</th>
                   <th className="px-3 py-2 font-medium">Analyst</th>
@@ -206,20 +207,20 @@ export function DashboardView() {
                 {theses.map((idea) => {
                   const analyst = memberById(state, idea.leadAnalystId);
                   return (
-                    <tr key={idea.id} className="blotter-row border-b border-border/80 last:border-0">
+                    <tr key={idea.id} className="blotter-row border-b border-rule/70 last:border-0">
                       <td className="px-3 py-2.5">
                         <Link
                           href={`/companies/${idea.id}?tab=thesis`}
-                          className="font-medium hover:text-primary"
+                          className="font-heading text-[15px] font-semibold tracking-[-0.015em] hover:text-primary"
                         >
                           {idea.companyName}
                         </Link>
                       </td>
-                      <td className="px-3 py-2.5 whitespace-nowrap">{analyst?.name}</td>
+                      <td className="px-3 py-2.5 whitespace-nowrap font-serif">{analyst?.name}</td>
                       <td className="px-3 py-2.5 whitespace-nowrap font-mono text-[12px] text-muted-foreground">
                         {formatDate(idea.thesis.lastEditedAt)}
                       </td>
-                      <td className="px-3 py-2.5 whitespace-normal text-muted-foreground">
+                      <td className="px-3 py-2.5 font-serif text-[13px] leading-5 whitespace-normal text-foreground/75">
                         {idea.thesis.changeSummary}
                       </td>
                     </tr>
@@ -238,10 +239,12 @@ function StageCount({ stage, count }: { stage: Stage; count: number }) {
   return (
     <Link
       href={`/pipeline?stage=${stage}`}
-      className="metric-cell blotter-row block px-3 py-2.5 focus-visible:outline-none"
+      className="inline-flex items-baseline gap-1.5 border-b border-transparent hover:border-foreground/40"
     >
-      <p className="font-heading text-xl font-semibold tabular-nums leading-none">{count}</p>
-      <p className="mt-1 text-[11px] leading-4 text-muted-foreground">{STAGE_LABELS[stage]}</p>
+      <span className="font-heading text-lg font-semibold tabular-nums leading-none">{count}</span>
+      <span className="font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
+        {STAGE_LABELS[stage]}
+      </span>
     </Link>
   );
 }

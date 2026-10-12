@@ -148,28 +148,28 @@ export function CompanyView() {
 
   return (
     <div>
-      <p className="mb-2 font-mono text-[11px] tracking-[0.06em] text-muted-foreground uppercase">
+      <p className="mb-2 font-mono text-[11px] tracking-[0.08em] text-muted-foreground uppercase">
         <Link href="/pipeline" className="hover:text-foreground">
-          Idea Pipeline
+          Pipeline
         </Link>
         <span className="px-1.5 normal-case tracking-normal">/</span>
-        <span className="normal-case tracking-normal">{idea.companyName}</span>
+        <span className="font-serif normal-case tracking-normal">{idea.companyName}</span>
       </p>
-      <div className="flex flex-col gap-3 border-b border-rule pb-4 lg:flex-row lg:items-start lg:justify-between">
+      <div className="flex flex-col gap-3 border-b-2 border-foreground/70 pb-4 lg:flex-row lg:items-start lg:justify-between">
         <div className="min-w-0">
-          <h1 className="font-heading text-[1.65rem] leading-tight font-semibold tracking-[-0.015em]">
+          <h1 className="font-heading text-[1.85rem] leading-tight font-semibold tracking-[-0.025em]">
             {idea.companyName}{" "}
-            <span className="ml-1 font-mono text-sm font-medium tracking-[0.04em] text-muted-foreground uppercase">
+            <span className="ml-1 font-mono text-sm font-medium tracking-[0.06em] text-muted-foreground uppercase">
               {idea.ticker}
             </span>
           </h1>
-          <p className="mt-1 text-[13px] text-muted-foreground">
+          <p className="mt-1 font-serif text-[14px] text-foreground/70">
             {idea.country} · {idea.sector}
           </p>
-          <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
+          <div className="mt-2.5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <StageBadge stage={idea.stage} />
             <PriorityBadge priority={idea.priority} />
-            <span className="text-[12px] text-muted-foreground">
+            <span className="font-serif text-[13px] text-muted-foreground">
               {analyst?.name} · Conviction {idea.conviction} · Reviewed{" "}
               {formatDate(idea.thesis.lastSubstantiveReview)}
             </span>

@@ -85,13 +85,15 @@ export function CommitteeView() {
                       setDossierId(meeting.agenda[0]?.id ?? "");
                     }}
                     className={cn(
-                      "w-full border-l-2 px-2 py-2 text-left transition-colors",
+                      "w-full border-b border-rule px-1 py-2 text-left transition-colors",
                       selected?.id === meeting.id
-                        ? "border-primary bg-ink-wash"
-                        : "border-transparent hover:bg-muted/70",
+                        ? "bg-[color-mix(in_srgb,var(--ink-wash)_50%,transparent)]"
+                        : "hover:bg-muted/40",
                     )}
                   >
-                    <span className="block text-[13px] font-medium">{meeting.title}</span>
+                    <span className="block font-heading text-[15px] font-semibold tracking-[-0.015em]">
+                      {meeting.title}
+                    </span>
                     <span className="block font-mono text-[11px] text-muted-foreground">
                       {formatDateTime(meeting.scheduledAt)} · {MEETING_STATUS_LABELS[meeting.status]}
                     </span>

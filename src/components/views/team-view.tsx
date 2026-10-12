@@ -62,26 +62,28 @@ export function TeamView() {
               </h2>
               <p className="text-[13px] text-muted-foreground">{member.role}</p>
               <p className="mt-1 font-mono text-[11px] text-muted-foreground">{member.email}</p>
-              <dl className="mt-3 grid grid-cols-3 divide-x divide-border border-y border-border text-center">
-                <div className="px-2 py-2">
-                  <dt className="font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
-                    Active ideas
+              <dl className="mt-3 flex flex-wrap items-baseline gap-x-5 gap-y-1 border-y border-rule py-2">
+                <div>
+                  <dt className="inline font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
+                    Ideas{" "}
                   </dt>
-                  <dd className="font-heading text-xl font-semibold tabular-nums">{ideas.length}</dd>
+                  <dd className="inline font-heading text-xl font-semibold tabular-nums">{ideas.length}</dd>
                 </div>
-                <div className="px-2 py-2">
-                  <dt className="font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
-                    Open questions
+                <div>
+                  <dt className="inline font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
+                    Questions{" "}
                   </dt>
-                  <dd className="font-heading text-xl font-semibold tabular-nums">
+                  <dd className="inline font-heading text-xl font-semibold tabular-nums">
                     {questions.length}
                   </dd>
                 </div>
-                <div className="px-2 py-2">
-                  <dt className="font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
-                    Overdue
+                <div>
+                  <dt className="inline font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
+                    Overdue{" "}
                   </dt>
-                  <dd className="font-heading text-xl font-semibold tabular-nums">{overdue.length}</dd>
+                  <dd className="inline font-heading text-xl font-semibold tabular-nums text-primary">
+                    {overdue.length}
+                  </dd>
                 </div>
               </dl>
               <h3 className="mt-4 font-mono text-[10px] font-medium tracking-[0.08em] text-muted-foreground uppercase">

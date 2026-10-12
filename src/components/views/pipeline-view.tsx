@@ -229,28 +229,32 @@ export function PipelineView() {
               { value: "margin", label: "Sort: margin of safety" },
             ]}
           />
-          <div className="flex rounded-[var(--radius)] border border-border p-0.5">
+          <div className="flex items-baseline gap-3 border-b border-rule pb-0.5">
             <button
               type="button"
               className={cn(
-                "h-7 rounded-[2px] px-2.5 font-mono text-[11px] tracking-[0.04em] uppercase",
-                view === "kanban" ? "bg-primary text-primary-foreground" : "text-muted-foreground",
-              )}
-              onClick={() => replace({ view: "kanban" })}
-              aria-pressed={view === "kanban"}
-            >
-              Board
-            </button>
-            <button
-              type="button"
-              className={cn(
-                "h-7 rounded-[2px] px-2.5 font-mono text-[11px] tracking-[0.04em] uppercase",
-                view === "table" ? "bg-primary text-primary-foreground" : "text-muted-foreground",
+                "font-serif text-[14px]",
+                view === "table"
+                  ? "font-semibold text-foreground underline decoration-primary decoration-2 underline-offset-4"
+                  : "text-muted-foreground",
               )}
               onClick={() => replace({ view: "table" })}
               aria-pressed={view === "table"}
             >
               Table
+            </button>
+            <button
+              type="button"
+              className={cn(
+                "font-serif text-[14px]",
+                view === "kanban"
+                  ? "font-semibold text-foreground underline decoration-primary decoration-2 underline-offset-4"
+                  : "text-muted-foreground",
+              )}
+              onClick={() => replace({ view: "kanban" })}
+              aria-pressed={view === "kanban"}
+            >
+              Board
             </button>
           </div>
           {filtersActive ? (
@@ -309,8 +313,8 @@ export function PipelineView() {
                     if (id) onDrop(stage, id);
                   }}
                 >
-                  <div className="mb-2 flex items-baseline justify-between px-1">
-                    <h2 className="font-mono text-[10px] font-medium tracking-[0.08em] text-muted-foreground uppercase">
+                  <div className="mb-2 flex items-baseline justify-between border-b border-foreground/20 pb-1">
+                    <h2 className="font-heading text-[15px] font-semibold tracking-[-0.01em]">
                       {STAGE_LABELS[stage]}
                     </h2>
                     <span className="font-mono text-[11px] tabular-nums text-muted-foreground">
@@ -319,7 +323,7 @@ export function PipelineView() {
                   </div>
                   <div
                     className={cn(
-                      "min-h-24 space-y-2 rounded-[var(--radius)] border border-dashed border-border bg-[color-mix(in_srgb,var(--muted)_45%,transparent)] p-2 transition-[border-color,background-color,transform] duration-200",
+                      "min-h-24 space-y-3 border-l border-rule pl-2 transition-[background-color,outline] duration-200",
                       draggingId && "stage-drop-active",
                     )}
                   >
@@ -410,25 +414,21 @@ function IdeaCard({
   const analyst = memberById(state, idea.leadAnalystId);
   const margin = ideaMargin(idea);
   const openQuestions = unresolvedQuestions(idea).length;
-  const border =
-    idea.priority === "high"
-      ? "border-l-primary"
-      : idea.priority === "medium"
-        ? "border-l-[#6b5e45]"
-        : "border-l-border";
+  const showValuation = idea.priority !== "low";
+  const showAction = idea.priority === "high" || openQuestions > 0;
 
   return (
     <article
       className={cn(
-        "rounded-[var(--radius)] border border-border border-l-2 bg-card p-2.5 transition-[background-color,box-shadow,transform] duration-150 hover:bg-[color-mix(in_srgb,var(--ink-wash)_40%,var(--card))]",
-        border,
+        "border-b border-rule pb-2.5 transition-colors",
+        idea.priority === "high" && "bg-[color-mix(in_srgb,var(--ink-wash)_35%,transparent)] px-1.5 pt-1",
         dragging && "opacity-60",
       )}
     >
       <div className="flex items-start gap-1">
         <button
           type="button"
-          className="mt-0.5 cursor-grab rounded p-0.5 text-muted-foreground hover:bg-muted"
+          className="mt-0.5 cursor-grab p-0.5 text-muted-foreground hover:text-foreground"
           draggable
           aria-label={`Drag ${idea.companyName} to another stage`}
           onDragStart={(event) => {
@@ -443,44 +443,52 @@ function IdeaCard({
         <div className="min-w-0 flex-1">
           <Link
             href={`/companies/${idea.id}`}
-            className="block truncate text-sm font-medium hover:text-primary"
+            className="block truncate font-heading text-[15px] font-semibold tracking-[-0.015em] hover:text-primary"
           >
             {idea.companyName}
           </Link>
-          <p className="text-xs text-muted-foreground">
-            {idea.ticker} · {idea.country}
+          <p className="font-mono text-[11px] text-muted-foreground">
+            {idea.ticker} · {idea.country} · {idea.sector}
           </p>
         </div>
       </div>
-      <p className="mt-1 truncate text-xs text-muted-foreground">{idea.sector}</p>
-      <dl className="mt-2 grid grid-cols-3 gap-1 text-xs">
-        <div>
-          <dt className="text-muted-foreground">Price</dt>
-          <dd className="tabular-nums">
-            {formatMoney(idea.valuation.currentPrice, state.settings.currency)}
-          </dd>
-        </div>
-        <div>
-          <dt className="text-muted-foreground">Base FV</dt>
-          <dd className="tabular-nums">
-            {formatMoney(idea.valuation.baseFairValue, state.settings.currency)}
-          </dd>
-        </div>
-        <div>
-          <dt className="text-muted-foreground">MoS</dt>
-          <dd className={cn("tabular-nums", margin !== null && margin < 0 && "text-destructive")}>
-            {formatPercent(margin)}
-          </dd>
-        </div>
-      </dl>
-      <div className="mt-2 flex flex-wrap items-center gap-1">
+
+      {showValuation ? (
+        <p className="mt-1.5 font-mono text-[11px] tabular-nums text-foreground/80">
+          {formatMoney(idea.valuation.currentPrice, state.settings.currency)}
+          <span className="text-muted-foreground"> → </span>
+          {formatMoney(idea.valuation.baseFairValue, state.settings.currency)}
+          <span
+            className={cn(
+              "ml-2",
+              margin !== null && margin < 0 ? "text-destructive" : "text-foreground",
+            )}
+          >
+            MoS {formatPercent(margin)}
+          </span>
+        </p>
+      ) : (
+        <p className="mt-1 font-serif text-[12px] text-muted-foreground">
+          {analyst?.initials} · {openQuestions} open q
+        </p>
+      )}
+
+      <div className="mt-1.5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
         <PriorityBadge priority={idea.priority} />
-        <span className="text-[11px] text-muted-foreground">{analyst?.initials}</span>
-        <span className="text-[11px] text-muted-foreground">
-          {openQuestions} open {openQuestions === 1 ? "question" : "questions"}
-        </span>
+        {showValuation ? (
+          <span className="font-mono text-[11px] text-muted-foreground">
+            {analyst?.initials}
+            {openQuestions > 0 ? ` · ${openQuestions} q` : ""}
+          </span>
+        ) : null}
       </div>
-      <p className="mt-2 line-clamp-2 text-xs leading-4 text-foreground/80">{idea.nextAction}</p>
+
+      {showAction ? (
+        <p className="mt-1.5 line-clamp-3 font-serif text-[12.5px] leading-5 text-foreground/80">
+          {idea.nextAction}
+        </p>
+      ) : null}
+
       <div className="mt-2 flex items-center gap-1">
         <NativeSelect
           ariaLabel={`Stage for ${idea.companyName}`}
@@ -539,15 +547,18 @@ function IdeaTable({
               const analyst = memberById(state, idea.leadAnalystId);
               const margin = ideaMargin(idea);
               return (
-                <tr key={idea.id} className="blotter-row border-b border-border/80 last:border-0">
+                <tr key={idea.id} className="blotter-row border-b border-rule/70 last:border-0">
                   <td className="px-2 py-2">
-                    <Link href={`/companies/${idea.id}`} className="font-medium hover:text-primary">
+                    <Link
+                      href={`/companies/${idea.id}`}
+                      className="font-heading text-[14px] font-semibold tracking-[-0.015em] hover:text-primary"
+                    >
                       {idea.companyName}
                     </Link>
-                    <div className="text-xs text-muted-foreground">{idea.ticker}</div>
+                    <div className="font-mono text-[11px] text-muted-foreground">{idea.ticker}</div>
                   </td>
-                  <td className="px-2 py-2 whitespace-nowrap">{idea.country}</td>
-                  <td className="px-2 py-2 whitespace-nowrap">{idea.sector}</td>
+                  <td className="px-2 py-2 font-serif whitespace-nowrap">{idea.country}</td>
+                  <td className="px-2 py-2 font-serif whitespace-nowrap">{idea.sector}</td>
                   <td className="px-2 py-2 whitespace-nowrap tabular-nums">
                     {formatMoney(idea.valuation.currentPrice, state.settings.currency)}
                   </td>
@@ -566,17 +577,17 @@ function IdeaTable({
                       options={stageOptions(STAGES)}
                     />
                   </td>
-                  <td className="px-2 py-2 whitespace-nowrap">{analyst?.name}</td>
+                  <td className="px-2 py-2 font-serif whitespace-nowrap">{analyst?.name}</td>
                   <td className="px-2 py-2">
                     <PriorityBadge priority={idea.priority} />
                   </td>
                   <td className="px-2 py-2">
                     <ConvictionBadge conviction={idea.conviction} />
                   </td>
-                  <td className="px-2 py-2 whitespace-nowrap">
+                  <td className="px-2 py-2 font-mono text-[12px] whitespace-nowrap">
                     {formatDate(idea.thesis.lastSubstantiveReview)}
                   </td>
-                  <td className="max-w-56 px-2 py-2 whitespace-normal text-muted-foreground">
+                  <td className="max-w-56 px-2 py-2 font-serif text-[13px] leading-5 whitespace-normal text-foreground/75">
                     {idea.nextAction}
                   </td>
                   <td className="px-2 py-2 tabular-nums">

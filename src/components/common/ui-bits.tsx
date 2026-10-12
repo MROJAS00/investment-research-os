@@ -17,12 +17,7 @@ export function Surface({
   children: ReactNode;
 }) {
   return (
-    <div
-      className={cn(
-        "rounded-[var(--radius)] border border-border bg-card",
-        className,
-      )}
-    >
+    <div className={cn("border border-rule bg-paper", className)}>
       {children}
     </div>
   );
@@ -40,18 +35,18 @@ export function PageHeader({
   actions?: ReactNode;
 }) {
   return (
-    <div className="mb-5 flex flex-col gap-3 border-b border-rule pb-3.5 sm:flex-row sm:items-end sm:justify-between">
+    <div className="mb-5 flex flex-col gap-3 border-b border-foreground/25 pb-3 sm:flex-row sm:items-end sm:justify-between">
       <div className="min-w-0">
         {eyebrow ? (
-          <p className="font-mono text-[11px] tracking-[0.08em] text-muted-foreground uppercase">
+          <p className="font-mono text-[11px] tracking-[0.1em] text-muted-foreground uppercase">
             {eyebrow}
           </p>
         ) : null}
-        <h1 className="font-heading text-[1.55rem] leading-tight font-semibold tracking-[-0.01em] text-foreground">
+        <h1 className="font-heading text-[1.7rem] leading-[1.15] font-semibold tracking-[-0.02em] text-foreground">
           {title}
         </h1>
         {description ? (
-          <p className="mt-1.5 max-w-2xl text-[13px] leading-5 text-muted-foreground">
+          <p className="mt-1.5 max-w-2xl font-serif text-[14px] leading-6 text-foreground/75">
             {description}
           </p>
         ) : null}
@@ -73,7 +68,7 @@ export function EmptyState({
   return (
     <Surface className="px-6 py-10 text-center">
       <h2 className="font-heading text-base font-semibold text-foreground">{title}</h2>
-      <p className="mx-auto mt-1 max-w-md text-sm text-muted-foreground">{body}</p>
+      <p className="mx-auto mt-1 max-w-md font-serif text-sm leading-6 text-foreground/70">{body}</p>
       {action ? <div className="mt-4 flex justify-center">{action}</div> : null}
     </Surface>
   );
@@ -94,14 +89,16 @@ export function Field({
 }) {
   return (
     <div className="grid gap-1.5">
-      <Label htmlFor={htmlFor}>{label}</Label>
+      <Label htmlFor={htmlFor} className="font-mono text-[11px] tracking-[0.06em] uppercase">
+        {label}
+      </Label>
       {children}
       {error ? (
         <p className="text-xs text-destructive" role="alert">
           {error}
         </p>
       ) : hint ? (
-        <p className="text-xs text-muted-foreground">{hint}</p>
+        <p className="font-serif text-xs leading-5 text-muted-foreground">{hint}</p>
       ) : null}
     </div>
   );
@@ -132,7 +129,7 @@ export function NativeSelect({
       value={value}
       onChange={(event) => onChange(event.target.value)}
       className={cn(
-        "h-8 w-full rounded-[var(--radius)] border border-input bg-card px-2 text-sm text-foreground outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/35 disabled:cursor-not-allowed disabled:opacity-50",
+        "h-8 w-full border border-input bg-paper px-2 text-sm text-foreground outline-none focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring/40 disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}
     >
@@ -145,39 +142,18 @@ export function NativeSelect({
   );
 }
 
-const priorityClass: Record<Priority, string> = {
-  high: "border-primary/35 bg-ink-wash text-primary",
-  medium: "border-[#6b5e45]/30 bg-amber-wash text-[#4f4638]",
-  low: "border-border bg-muted/70 text-muted-foreground",
-};
-
+/** Plain typographic mark — no pills, no filled chips. */
 export function PriorityBadge({ priority }: { priority: Priority }) {
   return (
-    <span
-      className={cn(
-        "inline-flex h-5 items-center rounded-[2px] border px-1.5 font-mono text-[10px] tracking-[0.04em] uppercase",
-        priorityClass[priority],
-      )}
-    >
+    <span className="mark-priority" data-level={priority}>
       {PRIORITY_LABELS[priority]}
     </span>
   );
 }
 
 export function StageBadge({ stage }: { stage: Stage }) {
-  const tone =
-    stage === "rejected"
-      ? "border-destructive/30 bg-rose-wash text-[#7f2424]"
-      : stage === "invested" || stage === "portfolio_candidate"
-        ? "border-primary/30 bg-ink-wash text-primary"
-        : "border-border bg-secondary text-secondary-foreground";
   return (
-    <span
-      className={cn(
-        "inline-flex h-5 items-center rounded-[2px] border px-1.5 font-mono text-[10px] tracking-[0.04em] uppercase",
-        tone,
-      )}
-    >
+    <span className="font-mono text-[10px] tracking-[0.08em] text-foreground/80 uppercase">
       {STAGE_LABELS[stage]}
     </span>
   );
@@ -185,28 +161,23 @@ export function StageBadge({ stage }: { stage: Stage }) {
 
 export function ConvictionBadge({ conviction }: { conviction: Conviction }) {
   return (
-    <span className="inline-flex h-5 items-center rounded-[2px] border border-border bg-muted/70 px-1.5 font-mono text-[10px] tracking-[0.04em] text-muted-foreground uppercase">
+    <span className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
       {CONVICTION_LABELS[conviction]}
     </span>
   );
 }
 
 export function ThesisStatusBadge({ status }: { status: ThesisStatus }) {
-  const tone =
+  const emphasis =
     status === "stale" || status === "invalidated"
-      ? "border-destructive/30 bg-rose-wash text-[#7f2424]"
+      ? "text-destructive"
       : status === "under_review"
-        ? "border-[#6b5e45]/30 bg-amber-wash text-[#4f4638]"
+        ? "text-[#5a4a32]"
         : status === "active"
-          ? "border-primary/30 bg-ink-wash text-primary"
-          : "border-border bg-muted/70 text-muted-foreground";
+          ? "text-primary"
+          : "text-muted-foreground";
   return (
-    <span
-      className={cn(
-        "inline-flex h-5 items-center rounded-[2px] border px-1.5 font-mono text-[10px] tracking-[0.04em] uppercase",
-        tone,
-      )}
-    >
+    <span className={cn("font-mono text-[10px] tracking-[0.08em] uppercase", emphasis)}>
       {THESIS_STATUS_LABELS[status]}
     </span>
   );
@@ -214,7 +185,7 @@ export function ThesisStatusBadge({ status }: { status: ThesisStatus }) {
 
 export function IllustrativeNote({ children }: { children?: ReactNode }) {
   return (
-    <p className="text-[12px] leading-5 text-muted-foreground">
+    <p className="font-serif text-[12.5px] leading-5 text-muted-foreground">
       {children ??
         "Illustrative demo figures. Not a live price and not an investment recommendation."}
     </p>
@@ -224,20 +195,17 @@ export function IllustrativeNote({ children }: { children?: ReactNode }) {
 export function LoadingState() {
   return (
     <div className="space-y-4 page-enter" aria-busy="true" aria-live="polite">
-      <div className="h-7 w-40 bg-muted" />
-      <div className="h-14 border border-border bg-card" />
-      <div className="grid gap-3 xl:grid-cols-[minmax(0,1.4fr)_minmax(0,0.8fr)]">
-        <div className="h-56 border border-border bg-card" />
-        <div className="h-56 border border-border bg-card" />
-      </div>
-      <p className="text-sm text-muted-foreground">Loading the demo workspace…</p>
+      <div className="h-8 w-48 bg-muted/80" />
+      <div className="h-12 border border-rule bg-paper" />
+      <div className="h-64 border border-rule bg-paper" />
+      <p className="font-serif text-sm text-muted-foreground">Loading the demo workspace…</p>
     </div>
   );
 }
 
 export function SectionLabel({ children }: { children: ReactNode }) {
   return (
-    <h2 className="mb-2 font-mono text-[11px] tracking-[0.08em] text-muted-foreground uppercase">
+    <h2 className="mb-2 font-heading text-[1.05rem] font-semibold tracking-[-0.015em] text-foreground">
       {children}
     </h2>
   );

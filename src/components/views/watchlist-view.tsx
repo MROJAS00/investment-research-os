@@ -194,10 +194,10 @@ export function WatchlistView() {
                       <td className="max-w-xs px-2 py-2 whitespace-normal">
                         <div className="mb-1 flex flex-wrap gap-1">
                           <PriorityBadge priority={idea.priority} />
-                          <span className="inline-flex h-5 items-center rounded-[2px] border border-border bg-muted/70 px-1.5 font-mono text-[10px] tracking-[0.04em] uppercase">
+                          <span className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
                             {idea.waitKind ? WAIT_KIND_LABELS[idea.waitKind] : "Unspecified"}
                           </span>
-                          <span className="inline-flex h-5 items-center rounded-[2px] border border-border bg-secondary px-1.5 font-mono text-[10px] tracking-[0.04em] uppercase">
+                          <span className="font-mono text-[10px] tracking-[0.08em] text-foreground/70 uppercase">
                             {idea.waitKind === "thesis"
                               ? "Thesis deteriorated"
                               : cheap
