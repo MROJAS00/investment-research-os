@@ -40,7 +40,9 @@ export function TeamView() {
       />
       <Surface className="mb-4 px-4 py-3">
         <p className="text-[13px] leading-5 text-muted-foreground">
-          Permissions are simulated. The “Acting as” control in the top bar only attributes history in this browser. Production access control is not implemented.
+          Permissions are simulated. The “Acting as” control in the top bar only
+          attributes history in this browser. Production access control is not
+          implemented.
         </p>
       </Surface>
       <div className="grid gap-3 xl:grid-cols-3">
@@ -57,23 +59,27 @@ export function TeamView() {
           );
           return (
             <Surface key={member.id} className="p-4">
-              <h2 className="font-heading text-lg font-semibold tracking-[-0.01em]">
+              <h2 className="text-base font-semibold tracking-tight">
                 {member.name}
               </h2>
               <p className="text-[13px] text-muted-foreground">{member.role}</p>
-              <p className="mt-1 font-mono text-[11px] text-muted-foreground">{member.email}</p>
+              <p className="mt-1 font-mono text-[11px] text-muted-foreground">
+                {member.email}
+              </p>
               <dl className="mt-3 flex flex-wrap items-baseline gap-x-5 gap-y-1 border-y border-rule py-2">
                 <div>
                   <dt className="inline font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
                     Ideas{" "}
                   </dt>
-                  <dd className="inline font-heading text-xl font-semibold tabular-nums">{ideas.length}</dd>
+                  <dd className="inline text-xl font-semibold tabular-nums">
+                    {ideas.length}
+                  </dd>
                 </div>
                 <div>
                   <dt className="inline font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
                     Questions{" "}
                   </dt>
-                  <dd className="inline font-heading text-xl font-semibold tabular-nums">
+                  <dd className="inline text-xl font-semibold tabular-nums">
                     {questions.length}
                   </dd>
                 </div>
@@ -81,7 +87,7 @@ export function TeamView() {
                   <dt className="inline font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
                     Overdue{" "}
                   </dt>
-                  <dd className="inline font-heading text-xl font-semibold tabular-nums text-primary">
+                  <dd className="inline text-xl font-semibold tabular-nums text-primary">
                     {overdue.length}
                   </dd>
                 </div>
@@ -91,17 +97,31 @@ export function TeamView() {
               </h3>
               <ul className="mt-1 space-y-2">
                 {ideas.length === 0 ? (
-                  <li className="text-sm text-muted-foreground">No active ideas.</li>
+                  <li className="text-sm text-muted-foreground">
+                    No active ideas.
+                  </li>
                 ) : (
                   ideas.map((idea) => (
-                    <li key={idea.id} className="flex items-start justify-between gap-2">
+                    <li
+                      key={idea.id}
+                      className="flex items-start justify-between gap-2"
+                    >
                       <div>
-                        <Link href={`/companies/${idea.id}`} className="text-sm font-medium hover:text-primary">
+                        <Link
+                          href={`/companies/${idea.id}`}
+                          className="text-sm font-medium hover:text-primary"
+                        >
                           {idea.companyName}
                         </Link>
-                        <p className="text-xs text-muted-foreground">{STAGE_LABELS[idea.stage]}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {STAGE_LABELS[idea.stage]}
+                        </p>
                       </div>
-                      <Button variant="ghost" size="sm" onClick={() => setIdeaTarget(idea)}>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setIdeaTarget(idea)}
+                      >
                         Reassign
                       </Button>
                     </li>
@@ -113,14 +133,18 @@ export function TeamView() {
               </h3>
               <ul className="mt-1 space-y-2">
                 {questions.length === 0 ? (
-                  <li className="text-sm text-muted-foreground">No open questions.</li>
+                  <li className="text-sm text-muted-foreground">
+                    No open questions.
+                  </li>
                 ) : (
                   questions.map(({ idea, question }) => (
                     <li key={question.id}>
                       <p className="text-sm leading-5">{question.question}</p>
                       <p className="text-xs text-muted-foreground">
                         {idea.companyName} · due {formatDate(question.dueDate)}
-                        {isQuestionOverdue(question.status, question.dueDate) ? " · Overdue" : ""}
+                        {isQuestionOverdue(question.status, question.dueDate)
+                          ? " · Overdue"
+                          : ""}
                       </p>
                       <Button
                         variant="ghost"
@@ -156,7 +180,11 @@ export function TeamView() {
         onClose={() => setQuestionTarget(null)}
         onSave={(ownerId) => {
           if (!questionTarget) return;
-          reassignQuestion(questionTarget.idea.id, questionTarget.question.id, ownerId);
+          reassignQuestion(
+            questionTarget.idea.id,
+            questionTarget.question.id,
+            ownerId,
+          );
           toast.success("Question owner updated.");
           setQuestionTarget(null);
         }}
@@ -176,7 +204,9 @@ function ReassignIdeaDialog({
   onClose: () => void;
   onSave: (analystId: string) => void;
 }) {
-  const [analystId, setAnalystId] = useState(idea?.leadAnalystId ?? team[0]?.id ?? "");
+  const [analystId, setAnalystId] = useState(
+    idea?.leadAnalystId ?? team[0]?.id ?? "",
+  );
   useEffect(() => {
     if (idea) setAnalystId(idea.leadAnalystId);
   }, [idea]);
@@ -192,7 +222,8 @@ function ReassignIdeaDialog({
         <DialogHeader>
           <DialogTitle>Reassign {idea?.companyName}</DialogTitle>
           <DialogDescription>
-            Changes the lead analyst on the research record. It does not change access rights.
+            Changes the lead analyst on the research record. It does not change
+            access rights.
           </DialogDescription>
         </DialogHeader>
         <Field label="Lead analyst" htmlFor="reassign-idea">
@@ -200,14 +231,19 @@ function ReassignIdeaDialog({
             id="reassign-idea"
             value={analystId || idea?.leadAnalystId || ""}
             onChange={setAnalystId}
-            options={team.map((member) => ({ value: member.id, label: `${member.name} — ${member.role}` }))}
+            options={team.map((member) => ({
+              value: member.id,
+              label: `${member.name} — ${member.role}`,
+            }))}
           />
         </Field>
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>
-          <Button onClick={() => analystId && onSave(analystId)}>Reassign</Button>
+          <Button onClick={() => analystId && onSave(analystId)}>
+            Reassign
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -247,7 +283,10 @@ function ReassignQuestionDialog({
             id="reassign-question"
             value={ownerId || target?.question.ownerId || ""}
             onChange={setOwnerId}
-            options={team.map((member) => ({ value: member.id, label: member.name }))}
+            options={team.map((member) => ({
+              value: member.id,
+              label: member.name,
+            }))}
           />
         </Field>
         <DialogFooter>

@@ -2,7 +2,12 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
-import { Field, NativeSelect, PageHeader, Surface } from "@/components/common/ui-bits";
+import {
+  Field,
+  NativeSelect,
+  PageHeader,
+  Surface,
+} from "@/components/common/ui-bits";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -62,7 +67,11 @@ export function SettingsView() {
           <h2 className="font-mono text-[11px] font-medium tracking-[0.08em] text-muted-foreground uppercase">
             Workspace
           </h2>
-          <Field label="Demo workspace name" htmlFor="workspace-name" error={nameError}>
+          <Field
+            label="Demo workspace name"
+            htmlFor="workspace-name"
+            error={nameError}
+          >
             <Input
               id="workspace-name"
               value={name}
@@ -110,7 +119,8 @@ export function SettingsView() {
             Research data
           </h2>
           <p className="text-sm leading-5 text-muted-foreground">
-            Exports include the fictional companies, theses, questions, documents, meetings, and history stored in this browser.
+            Exports include the fictional companies, theses, questions,
+            documents, meetings, and history stored in this browser.
           </p>
           <div className="flex flex-wrap gap-2">
             <Button variant="outline" onClick={exportJson}>
@@ -123,9 +133,14 @@ export function SettingsView() {
           <div className="border-t border-border pt-4">
             <h3 className="text-sm font-medium">Reset demo data</h3>
             <p className="mt-1 text-sm leading-5 text-muted-foreground">
-              Replaces every local change with the original Longview Capital dataset. This cannot be undone from the app.
+              Replaces every local change with the original Longview Capital
+              dataset. This cannot be undone from the app.
             </p>
-            <Button className="mt-3" variant="destructive" onClick={() => setConfirmReset(true)}>
+            <Button
+              className="mt-3"
+              variant="destructive"
+              onClick={() => setConfirmReset(true)}
+            >
               Reset demo data
             </Button>
           </div>
@@ -137,7 +152,9 @@ export function SettingsView() {
           <AlertDialogHeader>
             <AlertDialogTitle>Reset the demo workspace?</AlertDialogTitle>
             <AlertDialogDescription>
-              Ideas you added, thesis edits, committee decisions, and settings stored in this browser will be replaced by the original fictional dataset.
+              Ideas you added, thesis edits, committee decisions, and settings
+              stored in this browser will be replaced by the original fictional
+              dataset.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

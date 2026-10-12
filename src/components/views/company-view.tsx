@@ -50,8 +50,17 @@ import {
   thesisChangeAlert,
 } from "@/lib/assistant";
 import { createId } from "@/lib/dates";
-import { companyDossierMarkdown, copyCurrentUrl, downloadText } from "@/lib/export";
-import { formatDate, formatDateTime, formatMoney, formatPercent } from "@/lib/format";
+import {
+  companyDossierMarkdown,
+  copyCurrentUrl,
+  downloadText,
+} from "@/lib/export";
+import {
+  formatDate,
+  formatDateTime,
+  formatMoney,
+  formatPercent,
+} from "@/lib/format";
 import {
   ACTIVITY_LABELS,
   DOCUMENT_TYPE_LABELS,
@@ -84,7 +93,13 @@ import {
   type Valuation,
 } from "@/lib/types";
 
-const TABS = ["thesis", "valuation", "questions", "documents", "history"] as const;
+const TABS = [
+  "thesis",
+  "valuation",
+  "questions",
+  "documents",
+  "history",
+] as const;
 type CompanyTab = (typeof TABS)[number];
 
 const THESIS_FIELDS: { key: keyof Thesis; label: string }[] = [
@@ -117,7 +132,9 @@ export function CompanyView() {
         title="Company not in this workspace"
         body="The link does not match a research idea in the current demo data."
         action={
-          <Button render={<Link href="/pipeline" />}>Back to the pipeline</Button>
+          <Button render={<Link href="/pipeline" />}>
+            Back to the pipeline
+          </Button>
         }
       />
     );
@@ -128,7 +145,9 @@ export function CompanyView() {
   function setTab(next: string) {
     const query = new URLSearchParams(search.toString());
     query.set("tab", next);
-    router.replace(`/companies/${idea!.id}?${query.toString()}`, { scroll: false });
+    router.replace(`/companies/${idea!.id}?${query.toString()}`, {
+      scroll: false,
+    });
   }
 
   async function copyLink() {
@@ -153,23 +172,23 @@ export function CompanyView() {
           Pipeline
         </Link>
         <span className="px-1.5 normal-case tracking-normal">/</span>
-        <span className="font-serif normal-case tracking-normal">{idea.companyName}</span>
+        <span className=" normal-case tracking-normal">{idea.companyName}</span>
       </p>
-      <div className="flex flex-col gap-3 border-b-2 border-foreground/70 pb-4 lg:flex-row lg:items-start lg:justify-between">
+      <div className="flex flex-col gap-3 border-b border-rule pb-4 lg:flex-row lg:items-start lg:justify-between">
         <div className="min-w-0">
-          <h1 className="font-heading text-[1.85rem] leading-tight font-semibold tracking-[-0.025em]">
+          <h1 className="text-[1.5rem] leading-tight font-semibold tracking-tight">
             {idea.companyName}{" "}
             <span className="ml-1 font-mono text-sm font-medium tracking-[0.06em] text-muted-foreground uppercase">
               {idea.ticker}
             </span>
           </h1>
-          <p className="mt-1 font-serif text-[14px] text-foreground/70">
+          <p className="mt-1 text-[13px] text-foreground/70">
             {idea.country} · {idea.sector}
           </p>
           <div className="mt-2.5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <StageBadge stage={idea.stage} />
             <PriorityBadge priority={idea.priority} />
-            <span className="font-serif text-[13px] text-muted-foreground">
+            <span className="text-[13px] text-muted-foreground">
               {analyst?.name} · Conviction {idea.conviction} · Reviewed{" "}
               {formatDate(idea.thesis.lastSubstantiveReview)}
             </span>
@@ -180,7 +199,9 @@ export function CompanyView() {
             ariaLabel="Change stage"
             className="w-52"
             value={idea.stage}
-            onChange={(value) => stageController.requestStage(idea, value as Stage)}
+            onChange={(value) =>
+              stageController.requestStage(idea, value as Stage)
+            }
             options={stageOptions(STAGES)}
           />
           <Button variant="outline" onClick={() => setEditing(true)}>
@@ -196,7 +217,10 @@ export function CompanyView() {
       </div>
 
       <Tabs value={tab} onValueChange={setTab} className="mt-4">
-        <TabsList variant="line" className="w-full justify-start overflow-x-auto">
+        <TabsList
+          variant="line"
+          className="w-full justify-start overflow-x-auto"
+        >
           <TabsTrigger value="thesis">Investment Thesis</TabsTrigger>
           <TabsTrigger value="valuation">Valuation</TabsTrigger>
           <TabsTrigger value="questions">Research Questions</TabsTrigger>
@@ -220,11 +244,7 @@ export function CompanyView() {
         </TabsContent>
       </Tabs>
 
-      <IdeaFormDialog
-        open={editing}
-        editing={idea}
-        onOpenChange={setEditing}
-      />
+      <IdeaFormDialog open={editing} editing={idea} onOpenChange={setEditing} />
       <StageChangeDialog
         idea={stageController.pending?.idea ?? null}
         stage={stageController.pending?.stage ?? null}
@@ -265,7 +285,9 @@ function ThesisTab() {
       "invalidators",
     ];
     if (required.some((key) => String(draft[key]).trim().length < 10)) {
-      setError("Overview, mispricing, risks, and invalidators each need at least 10 characters.");
+      setError(
+        "Overview, mispricing, risks, and invalidators each need at least 10 characters.",
+      );
       return;
     }
     if (!draft.changeSummary.trim()) {
@@ -280,7 +302,10 @@ function ThesisTab() {
 
   function addSuggestions() {
     const count = addSuggestedQuestions(idea.id, suggestions);
-    if (count > 0) toast.success(`${count} follow-up question${count === 1 ? "" : "s"} added.`);
+    if (count > 0)
+      toast.success(
+        `${count} follow-up question${count === 1 ? "" : "s"} added.`,
+      );
     else toast.message("Those questions are already on the list.");
   }
 
@@ -290,12 +315,17 @@ function ThesisTab() {
         <div className="mb-3 flex flex-wrap items-center gap-2">
           <ThesisStatusBadge status={idea.thesis.status} />
           <span className="text-xs text-muted-foreground">
-            Last substantive review {formatDate(idea.thesis.lastSubstantiveReview)}
+            Last substantive review{" "}
+            {formatDate(idea.thesis.lastSubstantiveReview)}
           </span>
           <div className="ml-auto flex gap-2">
             {editing ? (
               <>
-                <Button variant="outline" size="sm" onClick={() => setEditing(false)}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setEditing(false)}
+                >
                   Cancel
                 </Button>
                 <Button size="sm" onClick={save}>
@@ -303,7 +333,11 @@ function ThesisTab() {
                 </Button>
               </>
             ) : (
-              <Button size="sm" variant="outline" onClick={() => setEditing(true)}>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setEditing(true)}
+              >
                 Edit thesis
               </Button>
             )}
@@ -336,7 +370,10 @@ function ThesisTab() {
                   type="date"
                   value={draft.lastSubstantiveReview}
                   onChange={(event) =>
-                    setDraft({ ...draft, lastSubstantiveReview: event.target.value })
+                    setDraft({
+                      ...draft,
+                      lastSubstantiveReview: event.target.value,
+                    })
                   }
                 />
               </Field>
@@ -351,7 +388,11 @@ function ThesisTab() {
               />
             </Field>
             {THESIS_FIELDS.map((field) => (
-              <Field key={field.key} label={field.label} htmlFor={`thesis-${field.key}`}>
+              <Field
+                key={field.key}
+                label={field.label}
+                htmlFor={`thesis-${field.key}`}
+              >
                 <Textarea
                   id={`thesis-${field.key}`}
                   className="min-h-20"
@@ -366,14 +407,22 @@ function ThesisTab() {
               {(["bullCase", "baseCase", "bearCase"] as const).map((key) => (
                 <Field
                   key={key}
-                  label={key === "bullCase" ? "Bull case" : key === "baseCase" ? "Base case" : "Bear case"}
+                  label={
+                    key === "bullCase"
+                      ? "Bull case"
+                      : key === "baseCase"
+                        ? "Base case"
+                        : "Bear case"
+                  }
                   htmlFor={`thesis-${key}`}
                 >
                   <Textarea
                     id={`thesis-${key}`}
                     className="min-h-28"
                     value={draft[key]}
-                    onChange={(event) => setDraft({ ...draft, [key]: event.target.value })}
+                    onChange={(event) =>
+                      setDraft({ ...draft, [key]: event.target.value })
+                    }
                   />
                 </Field>
               ))}
@@ -382,11 +431,16 @@ function ThesisTab() {
         ) : (
           <Surface className="px-4">
             {THESIS_FIELDS.map((field) => (
-              <section key={field.key} className="border-b border-border/80 py-3 last:border-0">
+              <section
+                key={field.key}
+                className="border-b border-border/80 py-3 last:border-0"
+              >
                 <h2 className="font-mono text-[10px] font-medium tracking-[0.08em] text-muted-foreground uppercase">
                   {field.label}
                 </h2>
-                <p className="mt-1 text-[13px] leading-6">{idea.thesis[field.key]}</p>
+                <p className="mt-1 text-[13px] leading-6">
+                  {idea.thesis[field.key]}
+                </p>
               </section>
             ))}
             <div className="grid gap-4 border-t border-rule py-3 md:grid-cols-3">
@@ -397,7 +451,10 @@ function ThesisTab() {
                   ["Bear case", idea.thesis.bearCase],
                 ] as const
               ).map(([label, text]) => (
-                <section key={label} className="md:border-l md:border-border/80 md:pl-3 md:first:border-0 md:first:pl-0">
+                <section
+                  key={label}
+                  className="md:border-l md:border-border/80 md:pl-3 md:first:border-0 md:first:pl-0"
+                >
                   <h2 className="font-mono text-[10px] font-medium tracking-[0.08em] text-muted-foreground uppercase">
                     {label}
                   </h2>
@@ -414,7 +471,8 @@ function ThesisTab() {
             Simulated assistant
           </p>
           <p className="mt-1 text-xs leading-5 text-muted-foreground">
-            Deterministic notes from data already in this workspace. Not a live model, not a price feed, and not a verification of the thesis.
+            Deterministic notes from data already in this workspace. Not a live
+            model, not a price feed, and not a verification of the thesis.
           </p>
           <h3 className="mt-3 text-sm font-medium">Earnings comparison</h3>
           {earnings.available ? (
@@ -432,7 +490,9 @@ function ThesisTab() {
           <p className="mt-2 text-sm leading-5">{earnings.observation}</p>
           <h3 className="mt-4 text-sm font-medium">Thesis-change alert</h3>
           <p className="mt-1 text-sm leading-5">{alert.headline}</p>
-          <p className="mt-1 text-xs leading-5 text-muted-foreground">{alert.detail}</p>
+          <p className="mt-1 text-xs leading-5 text-muted-foreground">
+            {alert.detail}
+          </p>
           <h3 className="mt-4 text-sm font-medium">Research summary</h3>
           <p className="mt-1 text-sm leading-5 whitespace-pre-wrap">
             {researchSummary(idea, analyst?.name ?? "Unassigned")}
@@ -443,7 +503,12 @@ function ThesisTab() {
               <li key={item}>{item}</li>
             ))}
           </ul>
-          <Button className="mt-3" size="sm" variant="outline" onClick={addSuggestions}>
+          <Button
+            className="mt-3"
+            size="sm"
+            variant="outline"
+            onClick={addSuggestions}
+          >
             Add as open questions
           </Button>
           <h3 className="mt-4 text-sm font-medium">How citations would work</h3>
@@ -454,7 +519,10 @@ function ThesisTab() {
           ) : (
             <ul className="mt-1 space-y-2">
               {citations.map((citation) => (
-                <li key={citation.documentId} className="text-xs leading-5 text-muted-foreground">
+                <li
+                  key={citation.documentId}
+                  className="text-xs leading-5 text-muted-foreground"
+                >
                   {citation.sentence}
                 </li>
               ))}
@@ -479,7 +547,9 @@ function ValuationTab() {
   const savedMargin = ideaMargin(idea);
   const dirty = JSON.stringify(draft) !== JSON.stringify(idea.valuation);
   const meets =
-    margin !== null && margin >= draft.minMarginOfSafety && draft.minMarginOfSafety > 0;
+    margin !== null &&
+    margin >= draft.minMarginOfSafety &&
+    draft.minMarginOfSafety > 0;
 
   function setNumber(key: keyof Valuation, value: string) {
     setDraft((current) => ({ ...current, [key]: Number(value) }));
@@ -494,18 +564,24 @@ function ValuationTab() {
       "targetEntry",
       "minMarginOfSafety",
     ];
-    if (fields.some((key) => !Number.isFinite(draft[key] as number) || (draft[key] as number) < 0)) {
+    if (
+      fields.some(
+        (key) =>
+          !Number.isFinite(draft[key] as number) || (draft[key] as number) < 0,
+      )
+    ) {
       setError("Every figure must be a number of zero or more.");
+      return;
+    }
+    if (draft.baseFairValue > 0 && draft.bearFairValue > draft.baseFairValue) {
+      setError("Bear fair value should not sit above the base case.");
       return;
     }
     if (
       draft.baseFairValue > 0 &&
-      draft.bearFairValue > draft.baseFairValue
+      draft.bullFairValue > 0 &&
+      draft.bullFairValue < draft.baseFairValue
     ) {
-      setError("Bear fair value should not sit above the base case.");
-      return;
-    }
-    if (draft.baseFairValue > 0 && draft.bullFairValue > 0 && draft.bullFairValue < draft.baseFairValue) {
       setError("Bull fair value should not sit below the base case.");
       return;
     }
@@ -521,7 +597,11 @@ function ValuationTab() {
     { key: "baseFairValue", label: "Base fair value", step: "0.01" },
     { key: "bullFairValue", label: "Bull fair value", step: "0.01" },
     { key: "targetEntry", label: "Target entry", step: "0.01" },
-    { key: "minMarginOfSafety", label: "Minimum margin of safety (decimal)", step: "0.01" },
+    {
+      key: "minMarginOfSafety",
+      label: "Minimum margin of safety (decimal)",
+      step: "0.01",
+    },
   ];
 
   return (
@@ -535,11 +615,16 @@ function ValuationTab() {
           {currency === "EUR"
             ? ". "
             : ` and the amounts below are shown in ${currency} using a fixed demo rate. `}
-          Editing here does not fetch a market price. This is not a recommendation.
+          Editing here does not fetch a market price. This is not a
+          recommendation.
         </IllustrativeNote>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           {fields.map((field) => (
-            <Field key={field.key} label={field.label} htmlFor={`val-${field.key}`}>
+            <Field
+              key={field.key}
+              label={field.label}
+              htmlFor={`val-${field.key}`}
+            >
               <Input
                 id={`val-${field.key}`}
                 type="number"
@@ -569,18 +654,23 @@ function ValuationTab() {
           <Button onClick={save} disabled={!dirty}>
             Save valuation
           </Button>
-          {dirty ? <span className="text-xs text-muted-foreground">Unsaved changes</span> : null}
+          {dirty ? (
+            <span className="text-xs text-muted-foreground">
+              Unsaved changes
+            </span>
+          ) : null}
         </div>
       </Surface>
       <Surface className="p-4">
         <h2 className="font-mono text-[11px] font-medium tracking-[0.08em] text-muted-foreground uppercase">
           Base-case margin of safety
         </h2>
-        <p className="mt-3 font-heading text-[2rem] font-semibold tabular-nums tracking-tight">
+        <p className="mt-3 text-[2rem] font-semibold tabular-nums tracking-tight">
           {formatPercent(margin)}
         </p>
         <p className="mt-2 text-sm text-muted-foreground">
-          (Base fair value − price) / base fair value. Saved value is {formatPercent(savedMargin)}.
+          (Base fair value − price) / base fair value. Saved value is{" "}
+          {formatPercent(savedMargin)}.
         </p>
         <p className="mt-3 text-sm">
           {draft.baseFairValue <= 0
@@ -610,7 +700,9 @@ function QuestionsTab() {
   const { state, idea, saveQuestion, deleteQuestion } = useCompany();
   const [editing, setEditing] = useState<ResearchQuestion | null>(null);
   const [open, setOpen] = useState(false);
-  const [pendingDelete, setPendingDelete] = useState<ResearchQuestion | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<ResearchQuestion | null>(
+    null,
+  );
 
   function startCreate() {
     const now = new Date().toISOString();
@@ -632,7 +724,8 @@ function QuestionsTab() {
     <div>
       <div className="mb-3 flex items-center justify-between gap-2">
         <p className="text-sm text-muted-foreground">
-          {idea.questions.filter((item) => item.status !== "completed").length} unresolved
+          {idea.questions.filter((item) => item.status !== "completed").length}{" "}
+          unresolved
         </p>
         <Button size="sm" onClick={startCreate}>
           Add question
@@ -654,7 +747,15 @@ function QuestionsTab() {
             <table className="w-full min-w-[760px] text-left text-sm">
               <thead className="border-b border-border text-xs text-muted-foreground">
                 <tr>
-                  {["Question", "Owner", "Priority", "Status", "Due", "Notes", ""].map((heading) => (
+                  {[
+                    "Question",
+                    "Owner",
+                    "Priority",
+                    "Status",
+                    "Due",
+                    "Notes",
+                    "",
+                  ].map((heading) => (
                     <th key={heading} className="px-3 py-2 font-medium">
                       {heading}
                     </th>
@@ -664,14 +765,33 @@ function QuestionsTab() {
               <tbody>
                 {idea.questions.map((question) => {
                   const owner = memberById(state, question.ownerId);
-                  const overdue = isQuestionOverdue(question.status, question.dueDate);
+                  const overdue = isQuestionOverdue(
+                    question.status,
+                    question.dueDate,
+                  );
                   return (
-                    <tr key={question.id} className="border-b border-border last:border-0">
-                      <td className="max-w-sm px-3 py-2 whitespace-normal">{question.question}</td>
-                      <td className="px-3 py-2 whitespace-nowrap">{owner?.name}</td>
-                      <td className="px-3 py-2">{PRIORITY_LABELS[question.priority]}</td>
-                      <td className="px-3 py-2">{QUESTION_STATUS_LABELS[question.status]}</td>
-                      <td className={cn("px-3 py-2 whitespace-nowrap", overdue && "text-destructive")}>
+                    <tr
+                      key={question.id}
+                      className="border-b border-border last:border-0"
+                    >
+                      <td className="max-w-sm px-3 py-2 whitespace-normal">
+                        {question.question}
+                      </td>
+                      <td className="px-3 py-2 whitespace-nowrap">
+                        {owner?.name}
+                      </td>
+                      <td className="px-3 py-2">
+                        {PRIORITY_LABELS[question.priority]}
+                      </td>
+                      <td className="px-3 py-2">
+                        {QUESTION_STATUS_LABELS[question.status]}
+                      </td>
+                      <td
+                        className={cn(
+                          "px-3 py-2 whitespace-nowrap",
+                          overdue && "text-destructive",
+                        )}
+                      >
                         {formatDate(question.dueDate)}
                         {overdue ? " · Overdue" : ""}
                       </td>
@@ -694,7 +814,10 @@ function QuestionsTab() {
                             variant="ghost"
                             size="sm"
                             onClick={() => {
-                              saveQuestion(idea.id, { ...question, status: "completed" });
+                              saveQuestion(idea.id, {
+                                ...question,
+                                status: "completed",
+                              });
                               toast.success("Question marked complete.");
                             }}
                           >
@@ -727,12 +850,16 @@ function QuestionsTab() {
           toast.success("Research question saved.");
         }}
       />
-      <AlertDialog open={Boolean(pendingDelete)} onOpenChange={(next) => !next && setPendingDelete(null)}>
+      <AlertDialog
+        open={Boolean(pendingDelete)}
+        onOpenChange={(next) => !next && setPendingDelete(null)}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Delete this question?</AlertDialogTitle>
             <AlertDialogDescription>
-              The question is removed from the company file. The deletion is written into history.
+              The question is removed from the company file. The deletion is
+              written into history.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -832,7 +959,9 @@ function QuestionDialogBody({
             id="q-text"
             className="min-h-20"
             value={draft.question}
-            onChange={(event) => onChange({ ...draft, question: event.target.value })}
+            onChange={(event) =>
+              onChange({ ...draft, question: event.target.value })
+            }
           />
         </Field>
         <div className="grid gap-3 sm:grid-cols-2">
@@ -841,14 +970,19 @@ function QuestionDialogBody({
               id="q-owner"
               value={draft.ownerId}
               onChange={(value) => onChange({ ...draft, ownerId: value })}
-              options={team.map((member) => ({ value: member.id, label: member.name }))}
+              options={team.map((member) => ({
+                value: member.id,
+                label: member.name,
+              }))}
             />
           </Field>
           <Field label="Priority" htmlFor="q-priority">
             <NativeSelect
               id="q-priority"
               value={draft.priority}
-              onChange={(value) => onChange({ ...draft, priority: value as Priority })}
+              onChange={(value) =>
+                onChange({ ...draft, priority: value as Priority })
+              }
               options={PRIORITIES.map((priority) => ({
                 value: priority,
                 label: PRIORITY_LABELS[priority],
@@ -859,7 +993,9 @@ function QuestionDialogBody({
             <NativeSelect
               id="q-status"
               value={draft.status}
-              onChange={(value) => onChange({ ...draft, status: value as QuestionStatus })}
+              onChange={(value) =>
+                onChange({ ...draft, status: value as QuestionStatus })
+              }
               options={QUESTION_STATUSES.map((status) => ({
                 value: status,
                 label: QUESTION_STATUS_LABELS[status],
@@ -871,7 +1007,9 @@ function QuestionDialogBody({
               id="q-due"
               type="date"
               value={draft.dueDate}
-              onChange={(event) => onChange({ ...draft, dueDate: event.target.value })}
+              onChange={(event) =>
+                onChange({ ...draft, dueDate: event.target.value })
+              }
             />
           </Field>
         </div>
@@ -879,7 +1017,9 @@ function QuestionDialogBody({
           <Textarea
             id="q-notes"
             value={draft.notes}
-            onChange={(event) => onChange({ ...draft, notes: event.target.value })}
+            onChange={(event) =>
+              onChange({ ...draft, notes: event.target.value })
+            }
           />
         </Field>
       </DialogShell>
@@ -903,7 +1043,12 @@ function DialogShell({
   const [mounted] = useState(true);
   if (!mounted) return null;
   return (
-    <QuestionModal title={title} description={description} onClose={onClose} onSubmit={onSubmit}>
+    <QuestionModal
+      title={title}
+      description={description}
+      onClose={onClose}
+      onSubmit={onSubmit}
+    >
       {children}
     </QuestionModal>
   );
@@ -923,7 +1068,12 @@ function QuestionModal({
   children: React.ReactNode;
 }) {
   return (
-    <ModalFrame title={title} description={description} onClose={onClose} onSubmit={onSubmit}>
+    <ModalFrame
+      title={title}
+      description={description}
+      onClose={onClose}
+      onSubmit={onSubmit}
+    >
       {children}
     </ModalFrame>
   );
@@ -949,7 +1099,9 @@ function ModalFrame({
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
-        <div className="grid max-h-[60vh] gap-3 overflow-y-auto pr-1">{children}</div>
+        <div className="grid max-h-[60vh] gap-3 overflow-y-auto pr-1">
+          {children}
+        </div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>
             Cancel
@@ -964,7 +1116,9 @@ function ModalFrame({
 function DocumentsTab() {
   const { state, idea, addDocument, deleteDocument } = useCompany();
   const [open, setOpen] = useState(false);
-  const [pendingDelete, setPendingDelete] = useState<DocumentRecord | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<DocumentRecord | null>(
+    null,
+  );
   const [draft, setDraft] = useState({
     title: "",
     type: "internal_note" as DocumentType,
@@ -1014,7 +1168,9 @@ function DocumentsTab() {
     <div>
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
         <IllustrativeNote>
-          Records added here are manual and fictional unless you are looking at seeded demo notes. A URL does not mean the document was retrieved or checked.
+          Records added here are manual and fictional unless you are looking at
+          seeded demo notes. A URL does not mean the document was retrieved or
+          checked.
         </IllustrativeNote>
         <Button size="sm" onClick={() => setOpen(true)}>
           Add record
@@ -1035,15 +1191,23 @@ function DocumentsTab() {
                   <div>
                     <h3 className="text-sm font-medium">{document.title}</h3>
                     <p className="mt-0.5 text-xs text-muted-foreground">
-                      {DOCUMENT_TYPE_LABELS[document.type]} · {formatDate(document.publicationDate)} · Illustrative record · {author?.name}
+                      {DOCUMENT_TYPE_LABELS[document.type]} ·{" "}
+                      {formatDate(document.publicationDate)} · Illustrative
+                      record · {author?.name}
                     </p>
                   </div>
-                  <Button variant="ghost" size="sm" onClick={() => setPendingDelete(document)}>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setPendingDelete(document)}
+                  >
                     Delete
                   </Button>
                 </div>
                 {document.analystNotes ? (
-                  <p className="mt-2 text-sm leading-5">{document.analystNotes}</p>
+                  <p className="mt-2 text-sm leading-5">
+                    {document.analystNotes}
+                  </p>
                 ) : null}
                 {document.associatedClaim ? (
                   <p className="mt-1 text-xs text-muted-foreground">
@@ -1076,7 +1240,9 @@ function DocumentsTab() {
             <Input
               id="doc-title"
               value={draft.title}
-              onChange={(event) => setDraft({ ...draft, title: event.target.value })}
+              onChange={(event) =>
+                setDraft({ ...draft, title: event.target.value })
+              }
             />
           </Field>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -1084,7 +1250,9 @@ function DocumentsTab() {
               <NativeSelect
                 id="doc-type"
                 value={draft.type}
-                onChange={(value) => setDraft({ ...draft, type: value as DocumentType })}
+                onChange={(value) =>
+                  setDraft({ ...draft, type: value as DocumentType })
+                }
                 options={DOCUMENT_TYPES.map((type) => ({
                   value: type,
                   label: DOCUMENT_TYPE_LABELS[type],
@@ -1102,18 +1270,26 @@ function DocumentsTab() {
               />
             </Field>
           </div>
-          <Field label="Source URL" htmlFor="doc-url" hint="Optional. Leave blank if there is no link.">
+          <Field
+            label="Source URL"
+            htmlFor="doc-url"
+            hint="Optional. Leave blank if there is no link."
+          >
             <Input
               id="doc-url"
               value={draft.sourceUrl}
-              onChange={(event) => setDraft({ ...draft, sourceUrl: event.target.value })}
+              onChange={(event) =>
+                setDraft({ ...draft, sourceUrl: event.target.value })
+              }
             />
           </Field>
           <Field label="Analyst notes" htmlFor="doc-notes">
             <Textarea
               id="doc-notes"
               value={draft.analystNotes}
-              onChange={(event) => setDraft({ ...draft, analystNotes: event.target.value })}
+              onChange={(event) =>
+                setDraft({ ...draft, analystNotes: event.target.value })
+              }
             />
           </Field>
           <Field label="Associated claim or question" htmlFor="doc-claim">
@@ -1135,7 +1311,8 @@ function DocumentsTab() {
           <AlertDialogHeader>
             <AlertDialogTitle>Delete this record?</AlertDialogTitle>
             <AlertDialogDescription>
-              The illustrative record is removed from the company file and the deletion is logged.
+              The illustrative record is removed from the company file and the
+              deletion is logged.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -1192,11 +1369,17 @@ function HistoryTab() {
             activities.map((activity) => {
               const actor = memberById(state, activity.actorId);
               return (
-                <li key={activity.id} className="border-b border-border pb-3 last:border-0">
+                <li
+                  key={activity.id}
+                  className="border-b border-border pb-3 last:border-0"
+                >
                   <p className="text-xs text-muted-foreground">
-                    {formatDateTime(activity.at)} · {ACTIVITY_LABELS[activity.kind]} · {actor?.name}
+                    {formatDateTime(activity.at)} ·{" "}
+                    {ACTIVITY_LABELS[activity.kind]} · {actor?.name}
                   </p>
-                  <p className="mt-1 text-sm leading-5">{activity.description}</p>
+                  <p className="mt-1 text-sm leading-5">
+                    {activity.description}
+                  </p>
                 </li>
               );
             })
@@ -1209,9 +1392,13 @@ function HistoryTab() {
               {idea.thesisHistory.map((snapshot) => {
                 const author = memberById(state, snapshot.savedBy);
                 return (
-                  <details key={snapshot.id} className="rounded-md border border-border px-3 py-2">
+                  <details
+                    key={snapshot.id}
+                    className="rounded-md border border-border px-3 py-2"
+                  >
                     <summary className="cursor-pointer text-sm">
-                      {formatDateTime(snapshot.savedAt)} · {author?.name} · {snapshot.summary}
+                      {formatDateTime(snapshot.savedAt)} · {author?.name} ·{" "}
+                      {snapshot.summary}
                     </summary>
                     <p className="mt-2 text-sm leading-5 text-muted-foreground">
                       {snapshot.thesis.baseCase}
@@ -1240,4 +1427,3 @@ function HistoryTab() {
     </div>
   );
 }
-

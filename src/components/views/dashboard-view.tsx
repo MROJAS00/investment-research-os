@@ -63,10 +63,10 @@ export function DashboardView() {
           <p className="font-mono text-[10px] tracking-[0.1em] text-muted-foreground uppercase">
             Awaiting analyst action
           </p>
-          <p className="mt-1 font-heading text-[3.25rem] leading-none font-semibold tabular-nums tracking-[-0.04em] text-primary group-hover:underline group-hover:decoration-1 group-hover:underline-offset-4">
+          <p className="mt-1 text-[3rem] leading-none font-semibold tabular-nums tracking-tight text-primary group-hover:underline group-hover:decoration-1 group-hover:underline-offset-4">
             {metrics.awaitingAction}
           </p>
-          <p className="mt-2 font-serif text-[13px] leading-5 text-foreground/70">
+          <p className="mt-2 text-[13px] leading-5 text-foreground/70">
             Active ideas with a research question past its due date.
           </p>
         </Link>
@@ -80,7 +80,7 @@ export function DashboardView() {
               <span className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
                 {item.label}
               </span>
-              <span className="font-heading text-[1.35rem] font-semibold tabular-nums leading-none">
+              <span className="text-[1.25rem] font-semibold tabular-nums leading-none">
                 {item.value}
               </span>
             </Link>
@@ -93,8 +93,9 @@ export function DashboardView() {
           <SectionLabel>Priority attention</SectionLabel>
           <Surface className="overflow-hidden">
             {attention.length === 0 ? (
-              <p className="px-4 py-8 font-serif text-sm text-muted-foreground">
-                Nothing in the current dataset trips a review, earnings, entry, or missing-document rule.
+              <p className="px-4 py-8 text-sm text-muted-foreground">
+                Nothing in the current dataset trips a review, earnings, entry,
+                or missing-document rule.
               </p>
             ) : (
               <div className="overflow-x-auto">
@@ -109,15 +110,20 @@ export function DashboardView() {
                   </thead>
                   <tbody>
                     {attention.map((item) => {
-                      const idea = state.ideas.find((entry) => entry.id === item.companyId);
+                      const idea = state.ideas.find(
+                        (entry) => entry.id === item.companyId,
+                      );
                       const owner = memberById(state, item.ownerId);
                       if (!idea) return null;
                       return (
-                        <tr key={item.id} className="blotter-row border-b border-rule/70 last:border-0">
+                        <tr
+                          key={item.id}
+                          className="blotter-row border-b border-rule/70 last:border-0"
+                        >
                           <td className="px-3 py-2.5 align-top">
                             <Link
                               href={`/companies/${idea.id}`}
-                              className="font-heading text-[15px] font-semibold tracking-[-0.015em] hover:text-primary"
+                              className="text-[13px] font-semibold tracking-tight hover:text-primary"
                             >
                               {idea.companyName}
                             </Link>
@@ -125,10 +131,10 @@ export function DashboardView() {
                               {idea.ticker}
                             </div>
                           </td>
-                          <td className="max-w-md px-3 py-2.5 align-top font-serif text-[13px] leading-5 whitespace-normal text-foreground/75">
+                          <td className="max-w-md px-3 py-2.5 align-top text-[13px] leading-5 whitespace-normal text-foreground/75">
                             {item.reason}
                           </td>
-                          <td className="px-3 py-2.5 align-top whitespace-nowrap font-serif text-[13px]">
+                          <td className="px-3 py-2.5 align-top whitespace-nowrap text-[13px]">
                             {owner?.name ?? "—"}
                           </td>
                           <td className="px-3 py-2.5 align-top">
@@ -150,9 +156,12 @@ export function DashboardView() {
             {events.map((event) => (
               <li key={event.id} className="blotter-row px-1 py-2.5">
                 <div className="flex items-baseline justify-between gap-3">
-                  <p className="font-heading text-[15px] font-semibold tracking-[-0.01em]">
+                  <p className="text-[13px] font-semibold tracking-tight">
                     {event.companyId ? (
-                      <Link href={`/companies/${event.companyId}`} className="hover:text-primary">
+                      <Link
+                        href={`/companies/${event.companyId}`}
+                        className="hover:text-primary"
+                      >
                         {event.title}
                       </Link>
                     ) : event.meetingId ? (
@@ -167,7 +176,7 @@ export function DashboardView() {
                     {formatDate(event.date)}
                   </time>
                 </div>
-                <p className="mt-0.5 font-serif text-[12.5px] text-muted-foreground">
+                <p className="mt-0.5 text-[12px] text-muted-foreground">
                   {EVENT_KIND_LABELS[event.kind]}
                   {event.overdue ? " · Overdue" : ""}
                   {event.detail ? ` · ${event.detail}` : ""}
@@ -185,8 +194,9 @@ export function DashboardView() {
             <StageCount key={stage} stage={stage} count={counts[stage]} />
           ))}
         </div>
-        <p className="mt-2 font-serif text-[12.5px] text-muted-foreground">
-          Historical outcomes: {counts.invested} invested, {counts.rejected} rejected. Those are filters, not active columns.
+        <p className="mt-2 text-[12px] text-muted-foreground">
+          Historical outcomes: {counts.invested} invested, {counts.rejected}{" "}
+          rejected. Those are filters, not active columns.
         </p>
       </section>
 
@@ -207,20 +217,25 @@ export function DashboardView() {
                 {theses.map((idea) => {
                   const analyst = memberById(state, idea.leadAnalystId);
                   return (
-                    <tr key={idea.id} className="blotter-row border-b border-rule/70 last:border-0">
+                    <tr
+                      key={idea.id}
+                      className="blotter-row border-b border-rule/70 last:border-0"
+                    >
                       <td className="px-3 py-2.5">
                         <Link
                           href={`/companies/${idea.id}?tab=thesis`}
-                          className="font-heading text-[15px] font-semibold tracking-[-0.015em] hover:text-primary"
+                          className="text-[13px] font-semibold tracking-tight hover:text-primary"
                         >
                           {idea.companyName}
                         </Link>
                       </td>
-                      <td className="px-3 py-2.5 whitespace-nowrap font-serif">{analyst?.name}</td>
+                      <td className="px-3 py-2.5 whitespace-nowrap ">
+                        {analyst?.name}
+                      </td>
                       <td className="px-3 py-2.5 whitespace-nowrap font-mono text-[12px] text-muted-foreground">
                         {formatDate(idea.thesis.lastEditedAt)}
                       </td>
-                      <td className="px-3 py-2.5 font-serif text-[13px] leading-5 whitespace-normal text-foreground/75">
+                      <td className="px-3 py-2.5 text-[13px] leading-5 whitespace-normal text-foreground/75">
                         {idea.thesis.changeSummary}
                       </td>
                     </tr>
@@ -241,7 +256,9 @@ function StageCount({ stage, count }: { stage: Stage; count: number }) {
       href={`/pipeline?stage=${stage}`}
       className="inline-flex items-baseline gap-1.5 border-b border-transparent hover:border-foreground/40"
     >
-      <span className="font-heading text-lg font-semibold tabular-nums leading-none">{count}</span>
+      <span className="text-lg font-semibold tabular-nums leading-none">
+        {count}
+      </span>
       <span className="font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
         {STAGE_LABELS[stage]}
       </span>

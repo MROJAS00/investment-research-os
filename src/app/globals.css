@@ -10,7 +10,7 @@
   --font-sans: var(--font-plex-sans), "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-source-serif), "Source Serif 4", Georgia, "Times New Roman", serif;
   --font-mono: var(--font-plex-mono), "IBM Plex Mono", ui-monospace, monospace;
-  --font-heading: var(--font-serif);
+  --font-heading: var(--font-plex-sans), "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -45,95 +45,94 @@
   --color-amber-wash: var(--amber-wash);
   --color-rose-wash: var(--rose-wash);
   --color-paper: var(--paper);
-  --radius-sm: 0;
-  --radius-md: 0;
-  --radius-lg: 0;
-  --radius-xl: 0;
-  --radius-2xl: 0;
-  --radius-3xl: 0;
-  --radius-4xl: 0;
+  --radius-sm: 0.125rem;
+  --radius-md: 0.15rem;
+  --radius-lg: 0.15rem;
+  --radius-xl: 0.2rem;
+  --radius-2xl: 0.25rem;
+  --radius-3xl: 0.3rem;
+  --radius-4xl: 0.35rem;
 }
 
 :root {
-  /* Ledger paper — stone, not cream cliché, not flat SaaS gray */
-  --background: #e8e2d6;
-  --paper: #f3eee4;
-  --foreground: #1a1814;
-  --card: #f3eee4;
-  --card-foreground: #1a1814;
-  --popover: #f6f2ea;
-  --popover-foreground: #1a1814;
-  /* Burgundy ink — actions/focus only */
-  --primary: #6b2430;
-  --primary-foreground: #f8f2ec;
-  --secondary: #e4ddd0;
-  --secondary-foreground: #1a1814;
-  --muted: #ddd5c6;
-  --muted-foreground: #5c564c;
-  --accent: #e8d9d4;
-  --accent-foreground: #6b2430;
-  --destructive: #8f1f1f;
-  --border: #c4b9a6;
-  --input: #b8ad98;
-  --ring: #6b2430;
-  --rule: #b7aa94;
-  --ink-wash: #e8d9d4;
-  --amber-wash: #ebe0c8;
-  --rose-wash: #edd8d4;
-  --chart-1: #6b2430;
+  /* Cool pale blue-gray research field — not cream, not warm parchment */
+  --background: #d9e0e8;
+  --paper: #eef2f6;
+  --foreground: #1a222c;
+  --card: #eef2f6;
+  --card-foreground: #1a222c;
+  --popover: #f4f7fa;
+  --popover-foreground: #1a222c;
+  /* Deep Baltic teal — primary actions + active nav only */
+  --primary: #0f6b6e;
+  --primary-foreground: #f2faf9;
+  --secondary: #e2e8ef;
+  --secondary-foreground: #1a222c;
+  --muted: #cfd7e1;
+  --muted-foreground: #546071;
+  --accent: #d4e8e8;
+  --accent-foreground: #0f6b6e;
+  --destructive: #a33a3a;
+  --border: #b4becb;
+  --input: #a8b3c2;
+  --ring: #0f6b6e;
+  --rule: #b0bac8;
+  --ink-wash: #d4e8e8;
+  --amber-wash: #e4e0d4;
+  --rose-wash: #ecdede;
+  --chart-1: #0f6b6e;
   --chart-2: #2f4f63;
-  --chart-3: #6b5e45;
+  --chart-3: #5a6573;
   --chart-4: #6b7280;
   --chart-5: #7a4e3a;
-  --radius: 0;
-  /* Light research rail tokens (masthead uses these) */
-  --sidebar: #f3eee4;
-  --sidebar-foreground: #1a1814;
-  --sidebar-primary: #6b2430;
-  --sidebar-primary-foreground: #f8f2ec;
-  --sidebar-accent: #e8d9d4;
-  --sidebar-accent-foreground: #6b2430;
-  --sidebar-border: #c4b9a6;
-  --sidebar-ring: #6b2430;
+  --radius: 0.15rem;
+  --sidebar: #eef2f6;
+  --sidebar-foreground: #1a222c;
+  --sidebar-primary: #0f6b6e;
+  --sidebar-primary-foreground: #f2faf9;
+  --sidebar-accent: #d4e8e8;
+  --sidebar-accent-foreground: #0f6b6e;
+  --sidebar-border: #b4becb;
+  --sidebar-ring: #0f6b6e;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --paper: oklch(0.18 0 0);
+  --background: oklch(0.145 0.01 240);
+  --paper: oklch(0.18 0.01 240);
   --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
+  --card: oklch(0.205 0.01 240);
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
+  --popover: oklch(0.205 0.01 240);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.72 0.08 20);
-  --primary-foreground: oklch(0.18 0.02 20);
+  --primary: oklch(0.68 0.08 195);
+  --primary-foreground: oklch(0.16 0.02 195);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
+  --accent: oklch(0.269 0.02 195);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --rule: oklch(1 0 0 / 14%);
-  --ink-wash: oklch(0.28 0.04 20);
+  --ring: oklch(0.68 0.08 195);
+  --rule: oklch(1 0 0 / 12%);
+  --ink-wash: oklch(0.28 0.04 195);
   --amber-wash: oklch(0.28 0.03 80);
   --rose-wash: oklch(0.28 0.04 20);
-  --chart-1: oklch(0.87 0 0);
+  --chart-1: oklch(0.68 0.08 195);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.18 0.01 20);
+  --sidebar: oklch(0.18 0.01 240);
   --sidebar-foreground: oklch(0.92 0 0);
-  --sidebar-primary: oklch(0.72 0.08 20);
-  --sidebar-primary-foreground: oklch(0.18 0.02 20);
-  --sidebar-accent: oklch(0.25 0.015 20);
+  --sidebar-primary: oklch(0.68 0.08 195);
+  --sidebar-primary-foreground: oklch(0.16 0.02 195);
+  --sidebar-accent: oklch(0.25 0.02 195);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --sidebar-ring: oklch(0.68 0.08 195);
 }
 
 @layer base {
@@ -147,27 +146,19 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "ss01" 1, "tnum" 1;
-    /* Visible ledger atmosphere — rules + grain must read in screenshots */
+    /* Quiet cool grain + faint ledger — not warm parchment, not dense broadsheet */
     background-color: var(--background);
     background-image:
+      radial-gradient(rgb(26 34 44 / 0.055) 0.65px, transparent 0.65px),
       repeating-linear-gradient(
         0deg,
         transparent,
-        transparent 23px,
-        rgb(90 70 40 / 0.11) 23px,
-        rgb(90 70 40 / 0.11) 24px
-      ),
-      radial-gradient(rgb(40 30 18 / 0.07) 0.7px, transparent 0.7px),
-      linear-gradient(180deg, rgb(255 250 240 / 0.35), transparent 40%);
-    background-size: auto, 2.5px 2.5px, auto;
+        transparent 31px,
+        rgb(26 34 44 / 0.045) 31px,
+        rgb(26 34 44 / 0.045) 32px
+      );
+    background-size: 3px 3px, auto;
     background-attachment: fixed;
-  }
-  h1,
-  h2,
-  h3,
-  .font-heading {
-    font-family: var(--font-heading);
-    font-feature-settings: "liga" 1, "kern" 1;
   }
   table {
     font-variant-numeric: tabular-nums;
@@ -175,44 +166,35 @@
 }
 
 @layer utilities {
+  .wordmark {
+    font-family: var(--font-source-serif), "Source Serif 4", Georgia, serif;
+    font-feature-settings: "liga" 1, "kern" 1;
+  }
+
   .page-enter {
-    animation: lv-page-enter 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: lv-page-enter 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   .blotter-row {
     transition:
-      background-color 0.16s ease,
-      box-shadow 0.16s ease;
+      background-color 0.14s ease,
+      box-shadow 0.14s ease;
   }
 
   .blotter-row:hover,
   .blotter-row:focus-within {
-    background-color: color-mix(in srgb, var(--ink-wash) 45%, var(--paper));
+    background-color: color-mix(in srgb, var(--ink-wash) 40%, var(--paper));
     box-shadow: inset 2px 0 0 var(--primary);
   }
 
   .stage-drop-active {
-    outline: 1px solid color-mix(in srgb, var(--primary) 55%, var(--border));
-    background-color: color-mix(in srgb, var(--ink-wash) 55%, transparent) !important;
-    transition:
-      outline-color 0.18s ease,
-      background-color 0.18s ease;
-  }
-
-  .paper-panel {
-    background-color: var(--paper);
-    background-image: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 22px,
-      rgb(90 70 40 / 0.07) 22px,
-      rgb(90 70 40 / 0.07) 23px
-    );
+    outline: 1px solid color-mix(in srgb, var(--primary) 50%, var(--border));
+    background-color: color-mix(in srgb, var(--ink-wash) 50%, transparent) !important;
   }
 
   .ticker-strip {
     border-block: 1px solid var(--rule);
-    background: color-mix(in srgb, var(--paper) 88%, #fff);
+    background: color-mix(in srgb, var(--paper) 92%, #fff);
   }
 
   .mark-priority {
@@ -232,8 +214,8 @@
   }
 
   .mark-priority[data-level="medium"] {
-    color: #5a4a32;
-    box-shadow: inset 0 -1px 0 #8a7a58;
+    color: #4a5563;
+    box-shadow: inset 0 -1px 0 #7a8694;
   }
 
   .mark-priority[data-level="low"] {
@@ -244,7 +226,7 @@
 @keyframes lv-page-enter {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(5px);
   }
   to {
     opacity: 1;

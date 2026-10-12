@@ -23,7 +23,12 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { formatDate, formatDateTime, formatMoney, formatPercent } from "@/lib/format";
+import {
+  formatDate,
+  formatDateTime,
+  formatMoney,
+  formatPercent,
+} from "@/lib/format";
 import {
   DECISION_LABELS,
   DOCUMENT_TYPE_LABELS,
@@ -31,7 +36,12 @@ import {
   STAGE_LABELS,
   WAIT_KIND_LABELS,
 } from "@/lib/labels";
-import { ideaMargin, memberById, unresolvedQuestions, upcomingMeetings } from "@/lib/metrics";
+import {
+  ideaMargin,
+  memberById,
+  unresolvedQuestions,
+  upcomingMeetings,
+} from "@/lib/metrics";
 import { useWorkspace } from "@/lib/store";
 import {
   DECISION_TYPES,
@@ -42,10 +52,15 @@ import {
 } from "@/lib/types";
 
 export function CommitteeView() {
-  const { state, createMeeting, addAgendaCompany, recordDecision } = useWorkspace();
+  const { state, createMeeting, addAgendaCompany, recordDecision } =
+    useWorkspace();
   const upcoming = upcomingMeetings(state.meetings);
-  const [selectedId, setSelectedId] = useState(upcoming[0]?.id ?? state.meetings[0]?.id ?? "");
-  const selected = state.meetings.find((meeting) => meeting.id === selectedId) ?? state.meetings[0];
+  const [selectedId, setSelectedId] = useState(
+    upcoming[0]?.id ?? state.meetings[0]?.id ?? "",
+  );
+  const selected =
+    state.meetings.find((meeting) => meeting.id === selectedId) ??
+    state.meetings[0];
   const [dossierId, setDossierId] = useState(upcoming[0]?.agenda[0]?.id ?? "");
   const [creating, setCreating] = useState(false);
   const [adding, setAdding] = useState(false);
@@ -58,7 +73,9 @@ export function CommitteeView() {
         .map((item) => ({ meeting, item })),
     )
     .sort((a, b) =>
-      (b.item.decision?.decidedAt ?? "").localeCompare(a.item.decision?.decidedAt ?? ""),
+      (b.item.decision?.decidedAt ?? "").localeCompare(
+        a.item.decision?.decidedAt ?? "",
+      ),
     );
 
   return (
@@ -91,11 +108,12 @@ export function CommitteeView() {
                         : "hover:bg-muted/40",
                     )}
                   >
-                    <span className="block font-heading text-[15px] font-semibold tracking-[-0.015em]">
+                    <span className="block text-[13px] font-semibold tracking-tight">
                       {meeting.title}
                     </span>
                     <span className="block font-mono text-[11px] text-muted-foreground">
-                      {formatDateTime(meeting.scheduledAt)} · {MEETING_STATUS_LABELS[meeting.status]}
+                      {formatDateTime(meeting.scheduledAt)} ·{" "}
+                      {MEETING_STATUS_LABELS[meeting.status]}
                     </span>
                   </button>
                 </li>
@@ -108,15 +126,17 @@ export function CommitteeView() {
             <Surface className="p-4">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
-                  <h2 className="font-heading text-lg font-semibold tracking-[-0.01em]">
+                  <h2 className="text-base font-semibold tracking-tight">
                     {selected.title}
                   </h2>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    {formatDateTime(selected.scheduledAt)} · {selected.location} ·{" "}
-                    {MEETING_STATUS_LABELS[selected.status]}
+                    {formatDateTime(selected.scheduledAt)} · {selected.location}{" "}
+                    · {MEETING_STATUS_LABELS[selected.status]}
                   </p>
                   {selected.notes ? (
-                    <p className="mt-2 max-w-3xl text-sm leading-5">{selected.notes}</p>
+                    <p className="mt-2 max-w-3xl text-sm leading-5">
+                      {selected.notes}
+                    </p>
                   ) : null}
                 </div>
                 {selected.status !== "completed" ? (
@@ -132,7 +152,9 @@ export function CommitteeView() {
               ) : (
                 <ul className="mt-4 divide-y divide-border border-t border-border">
                   {selected.agenda.map((item) => {
-                    const idea = state.ideas.find((entry) => entry.id === item.companyId);
+                    const idea = state.ideas.find(
+                      (entry) => entry.id === item.companyId,
+                    );
                     const presenter = memberById(state, item.presenterId);
                     if (!idea) return null;
                     const openQuestions = unresolvedQuestions(idea);
@@ -147,8 +169,12 @@ export function CommitteeView() {
                               {idea.companyName}
                             </Link>
                             <p className="text-xs text-muted-foreground">
-                              {idea.ticker} · Presenter {presenter?.name} · {STAGE_LABELS[idea.stage]} ·{" "}
-                              {openQuestions.length} open {openQuestions.length === 1 ? "question" : "questions"}
+                              {idea.ticker} · Presenter {presenter?.name} ·{" "}
+                              {STAGE_LABELS[idea.stage]} ·{" "}
+                              {openQuestions.length} open{" "}
+                              {openQuestions.length === 1
+                                ? "question"
+                                : "questions"}
                             </p>
                           </div>
                           <div className="flex gap-2">
@@ -156,13 +182,21 @@ export function CommitteeView() {
                               size="sm"
                               variant="outline"
                               onClick={() =>
-                                setDossierId((current) => (current === item.id ? "" : item.id))
+                                setDossierId((current) =>
+                                  current === item.id ? "" : item.id,
+                                )
                               }
                             >
-                              {dossierId === item.id ? "Hide dossier" : "Open dossier"}
+                              {dossierId === item.id
+                                ? "Hide dossier"
+                                : "Open dossier"}
                             </Button>
-                            {!item.decision && selected.status !== "cancelled" ? (
-                              <Button size="sm" onClick={() => setDecisionFor(item)}>
+                            {!item.decision &&
+                            selected.status !== "cancelled" ? (
+                              <Button
+                                size="sm"
+                                onClick={() => setDecisionFor(item)}
+                              >
                                 Record decision
                               </Button>
                             ) : null}
@@ -176,7 +210,9 @@ export function CommitteeView() {
                             {item.decision.rationale}
                           </p>
                         ) : null}
-                        {dossierId === item.id ? <Dossier item={item} meeting={selected} /> : null}
+                        {dossierId === item.id ? (
+                          <Dossier item={item} meeting={selected} />
+                        ) : null}
                       </li>
                     );
                   })}
@@ -196,20 +232,28 @@ export function CommitteeView() {
         <h2 className="mb-2 text-sm font-semibold">Decision history</h2>
         <Surface className="overflow-hidden">
           {history.length === 0 ? (
-            <p className="px-4 py-6 text-sm text-muted-foreground">No decisions recorded yet.</p>
+            <p className="px-4 py-6 text-sm text-muted-foreground">
+              No decisions recorded yet.
+            </p>
           ) : (
             <ul className="divide-y divide-border">
               {history.map(({ meeting, item }) => {
-                const idea = state.ideas.find((entry) => entry.id === item.companyId);
+                const idea = state.ideas.find(
+                  (entry) => entry.id === item.companyId,
+                );
                 const actor = memberById(state, item.decision?.decidedBy ?? "");
                 if (!item.decision || !idea) return null;
                 return (
                   <li key={item.id} className="px-4 py-3">
                     <p className="text-xs text-muted-foreground">
-                      {formatDateTime(item.decision.decidedAt)} · {meeting.title} · {actor?.name}
+                      {formatDateTime(item.decision.decidedAt)} ·{" "}
+                      {meeting.title} · {actor?.name}
                     </p>
                     <p className="mt-1 text-sm">
-                      <Link href={`/companies/${idea.id}`} className="font-medium hover:text-primary">
+                      <Link
+                        href={`/companies/${idea.id}`}
+                        className="font-medium hover:text-primary"
+                      >
                         {idea.companyName}
                       </Link>
                       {" · "}
@@ -262,7 +306,13 @@ export function CommitteeView() {
   );
 }
 
-function Dossier({ item, meeting }: { item: AgendaItem; meeting: CommitteeMeeting }) {
+function Dossier({
+  item,
+  meeting,
+}: {
+  item: AgendaItem;
+  meeting: CommitteeMeeting;
+}) {
   const { state } = useWorkspace();
   const idea = state.ideas.find((entry) => entry.id === item.companyId);
   if (!idea) return null;
@@ -293,12 +343,15 @@ function Dossier({ item, meeting }: { item: AgendaItem; meeting: CommitteeMeetin
           <ul className="mt-1 space-y-1 text-sm">
             <li>Price {formatMoney(idea.valuation.currentPrice, currency)}</li>
             <li>
-              Bear / base / bull {formatMoney(idea.valuation.bearFairValue, currency)} /{" "}
+              Bear / base / bull{" "}
+              {formatMoney(idea.valuation.bearFairValue, currency)} /{" "}
               {formatMoney(idea.valuation.baseFairValue, currency)} /{" "}
               {formatMoney(idea.valuation.bullFairValue, currency)}
             </li>
             <li>Margin of safety {formatPercent(ideaMargin(idea))}</li>
-            <li>Target entry {formatMoney(idea.valuation.targetEntry, currency)}</li>
+            <li>
+              Target entry {formatMoney(idea.valuation.targetEntry, currency)}
+            </li>
           </ul>
         </section>
         <section>
@@ -334,7 +387,9 @@ function Dossier({ item, meeting }: { item: AgendaItem; meeting: CommitteeMeetin
           Documents to review
         </h3>
         {idea.documents.length === 0 ? (
-          <p className="mt-1 text-sm text-muted-foreground">No illustrative records stored.</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            No illustrative records stored.
+          </p>
         ) : (
           <ul className="mt-1 space-y-1 text-sm">
             {idea.documents.map((document) => (
@@ -345,9 +400,12 @@ function Dossier({ item, meeting }: { item: AgendaItem; meeting: CommitteeMeetin
             ))}
           </ul>
         )}
-        {!idea.documents.some((document) => document.type === "valuation_model") ? (
+        {!idea.documents.some(
+          (document) => document.type === "valuation_model",
+        ) ? (
           <p className="mt-2 text-sm text-[#7f2424]">
-            The valuation model is not in the file. That gap is visible to the committee on purpose.
+            The valuation model is not in the file. That gap is visible to the
+            committee on purpose.
           </p>
         ) : null}
       </section>
@@ -362,7 +420,12 @@ function MeetingDialog({
 }: {
   open: boolean;
   onClose: () => void;
-  onCreate: (input: { title: string; scheduledAt: string; location: string; notes: string }) => void;
+  onCreate: (input: {
+    title: string;
+    scheduledAt: string;
+    location: string;
+    notes: string;
+  }) => void;
 }) {
   const [title, setTitle] = useState("Investment Committee");
   const [date, setDate] = useState("");
@@ -382,14 +445,28 @@ function MeetingDialog({
         </DialogHeader>
         <div className="grid gap-3">
           <Field label="Title" htmlFor="meet-title" error={error}>
-            <Input id="meet-title" value={title} onChange={(event) => setTitle(event.target.value)} />
+            <Input
+              id="meet-title"
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
+            />
           </Field>
           <div className="grid grid-cols-2 gap-3">
             <Field label="Date" htmlFor="meet-date">
-              <Input id="meet-date" type="date" value={date} onChange={(event) => setDate(event.target.value)} />
+              <Input
+                id="meet-date"
+                type="date"
+                value={date}
+                onChange={(event) => setDate(event.target.value)}
+              />
             </Field>
             <Field label="Time" htmlFor="meet-time">
-              <Input id="meet-time" type="time" value={time} onChange={(event) => setTime(event.target.value)} />
+              <Input
+                id="meet-time"
+                type="time"
+                value={time}
+                onChange={(event) => setTime(event.target.value)}
+              />
             </Field>
           </div>
           <Field label="Location" htmlFor="meet-location">
@@ -400,7 +477,11 @@ function MeetingDialog({
             />
           </Field>
           <Field label="Notes" htmlFor="meet-notes">
-            <Textarea id="meet-notes" value={notes} onChange={(event) => setNotes(event.target.value)} />
+            <Textarea
+              id="meet-notes"
+              value={notes}
+              onChange={(event) => setNotes(event.target.value)}
+            />
           </Field>
         </div>
         <DialogFooter>
@@ -415,7 +496,9 @@ function MeetingDialog({
               }
               onCreate({
                 title,
-                scheduledAt: new Date(`${date}T${time || "09:00"}`).toISOString(),
+                scheduledAt: new Date(
+                  `${date}T${time || "09:00"}`,
+                ).toISOString(),
                 location,
                 notes,
               });
@@ -469,10 +552,14 @@ function AddCompanyDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add a company</DialogTitle>
-          <DialogDescription>Choose an active research idea and a presenting analyst.</DialogDescription>
+          <DialogDescription>
+            Choose an active research idea and a presenting analyst.
+          </DialogDescription>
         </DialogHeader>
         {candidates.length === 0 ? (
-          <p className="text-sm text-muted-foreground">Every active idea is already on this agenda.</p>
+          <p className="text-sm text-muted-foreground">
+            Every active idea is already on this agenda.
+          </p>
         ) : (
           <div className="grid gap-3">
             <Field label="Company" htmlFor="agenda-company" error={error}>
@@ -491,7 +578,10 @@ function AddCompanyDialog({
                 id="agenda-presenter"
                 value={presenterId}
                 onChange={setPresenterId}
-                options={state.team.map((member) => ({ value: member.id, label: member.name }))}
+                options={state.team.map((member) => ({
+                  value: member.id,
+                  label: member.name,
+                }))}
               />
             </Field>
           </div>
@@ -525,7 +615,11 @@ function DecisionDialog({
 }: {
   item: AgendaItem | null;
   onClose: () => void;
-  onSave: (input: { type: DecisionType; rationale: string; waitKind?: WaitKind }) => void;
+  onSave: (input: {
+    type: DecisionType;
+    rationale: string;
+    waitKind?: WaitKind;
+  }) => void;
 }) {
   const { state } = useWorkspace();
   const idea = state.ideas.find((entry) => entry.id === item?.companyId);
@@ -571,10 +665,12 @@ function DecisionDialog({
                 id="decision-wait"
                 value={waitKind}
                 onChange={(value) => setWaitKind(value as WaitKind)}
-                options={(Object.keys(WAIT_KIND_LABELS) as WaitKind[]).map((kind) => ({
-                  value: kind,
-                  label: WAIT_KIND_LABELS[kind],
-                }))}
+                options={(Object.keys(WAIT_KIND_LABELS) as WaitKind[]).map(
+                  (kind) => ({
+                    value: kind,
+                    label: WAIT_KIND_LABELS[kind],
+                  }),
+                )}
               />
             </Field>
           ) : null}
