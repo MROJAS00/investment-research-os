@@ -39,11 +39,11 @@ export function TeamView() {
         description="Who is carrying which ideas and questions. Workload is a count of open work, not a score."
       />
       <Surface className="mb-4 px-4 py-3">
-        <p className="text-sm leading-5 text-muted-foreground">
+        <p className="text-[13px] leading-5 text-muted-foreground">
           Permissions are simulated. The “Acting as” control in the top bar only attributes history in this browser. Production access control is not implemented.
         </p>
       </Surface>
-      <div className="grid gap-4 xl:grid-cols-3">
+      <div className="grid gap-3 xl:grid-cols-3">
         {state.team.map((member) => {
           const ideas = state.ideas.filter(
             (idea) =>
@@ -57,24 +57,34 @@ export function TeamView() {
           );
           return (
             <Surface key={member.id} className="p-4">
-              <h2 className="text-base font-semibold">{member.name}</h2>
-              <p className="text-sm text-muted-foreground">{member.role}</p>
-              <p className="mt-1 text-xs text-muted-foreground">{member.email}</p>
-              <dl className="mt-3 grid grid-cols-3 gap-2 text-center">
-                <div className="rounded-md bg-muted px-2 py-2">
-                  <dt className="text-[11px] text-muted-foreground">Active ideas</dt>
-                  <dd className="text-lg font-semibold tabular-nums">{ideas.length}</dd>
+              <h2 className="font-heading text-lg font-semibold tracking-[-0.01em]">
+                {member.name}
+              </h2>
+              <p className="text-[13px] text-muted-foreground">{member.role}</p>
+              <p className="mt-1 font-mono text-[11px] text-muted-foreground">{member.email}</p>
+              <dl className="mt-3 grid grid-cols-3 divide-x divide-border border-y border-border text-center">
+                <div className="px-2 py-2">
+                  <dt className="font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
+                    Active ideas
+                  </dt>
+                  <dd className="font-heading text-xl font-semibold tabular-nums">{ideas.length}</dd>
                 </div>
-                <div className="rounded-md bg-muted px-2 py-2">
-                  <dt className="text-[11px] text-muted-foreground">Open questions</dt>
-                  <dd className="text-lg font-semibold tabular-nums">{questions.length}</dd>
+                <div className="px-2 py-2">
+                  <dt className="font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
+                    Open questions
+                  </dt>
+                  <dd className="font-heading text-xl font-semibold tabular-nums">
+                    {questions.length}
+                  </dd>
                 </div>
-                <div className="rounded-md bg-muted px-2 py-2">
-                  <dt className="text-[11px] text-muted-foreground">Overdue</dt>
-                  <dd className="text-lg font-semibold tabular-nums">{overdue.length}</dd>
+                <div className="px-2 py-2">
+                  <dt className="font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
+                    Overdue
+                  </dt>
+                  <dd className="font-heading text-xl font-semibold tabular-nums">{overdue.length}</dd>
                 </div>
               </dl>
-              <h3 className="mt-4 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+              <h3 className="mt-4 font-mono text-[10px] font-medium tracking-[0.08em] text-muted-foreground uppercase">
                 Ideas
               </h3>
               <ul className="mt-1 space-y-2">
@@ -96,7 +106,7 @@ export function TeamView() {
                   ))
                 )}
               </ul>
-              <h3 className="mt-4 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+              <h3 className="mt-4 font-mono text-[10px] font-medium tracking-[0.08em] text-muted-foreground uppercase">
                 Questions
               </h3>
               <ul className="mt-1 space-y-2">

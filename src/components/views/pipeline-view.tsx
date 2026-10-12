@@ -229,12 +229,12 @@ export function PipelineView() {
               { value: "margin", label: "Sort: margin of safety" },
             ]}
           />
-          <div className="flex rounded-lg border border-border p-0.5">
+          <div className="flex rounded-[var(--radius)] border border-border p-0.5">
             <button
               type="button"
               className={cn(
-                "h-7 rounded-md px-2.5 text-xs font-medium",
-                view === "kanban" ? "bg-secondary text-foreground" : "text-muted-foreground",
+                "h-7 rounded-[2px] px-2.5 font-mono text-[11px] tracking-[0.04em] uppercase",
+                view === "kanban" ? "bg-primary text-primary-foreground" : "text-muted-foreground",
               )}
               onClick={() => replace({ view: "kanban" })}
               aria-pressed={view === "kanban"}
@@ -244,8 +244,8 @@ export function PipelineView() {
             <button
               type="button"
               className={cn(
-                "h-7 rounded-md px-2.5 text-xs font-medium",
-                view === "table" ? "bg-secondary text-foreground" : "text-muted-foreground",
+                "h-7 rounded-[2px] px-2.5 font-mono text-[11px] tracking-[0.04em] uppercase",
+                view === "table" ? "bg-primary text-primary-foreground" : "text-muted-foreground",
               )}
               onClick={() => replace({ view: "table" })}
               aria-pressed={view === "table"}
@@ -310,15 +310,17 @@ export function PipelineView() {
                   }}
                 >
                   <div className="mb-2 flex items-baseline justify-between px-1">
-                    <h2 className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+                    <h2 className="font-mono text-[10px] font-medium tracking-[0.08em] text-muted-foreground uppercase">
                       {STAGE_LABELS[stage]}
                     </h2>
-                    <span className="text-xs tabular-nums text-muted-foreground">{cards.length}</span>
+                    <span className="font-mono text-[11px] tabular-nums text-muted-foreground">
+                      {cards.length}
+                    </span>
                   </div>
                   <div
                     className={cn(
-                      "space-y-2 rounded-lg border border-dashed border-border bg-muted/40 p-2 min-h-24",
-                      draggingId && "border-primary/40",
+                      "min-h-24 space-y-2 rounded-[var(--radius)] border border-dashed border-border bg-[color-mix(in_srgb,var(--muted)_45%,transparent)] p-2 transition-[border-color,background-color,transform] duration-200",
+                      draggingId && "stage-drop-active",
                     )}
                   >
                     {cards.length === 0 ? (
@@ -410,15 +412,15 @@ function IdeaCard({
   const openQuestions = unresolvedQuestions(idea).length;
   const border =
     idea.priority === "high"
-      ? "border-l-[#1e5c45]"
+      ? "border-l-primary"
       : idea.priority === "medium"
-        ? "border-l-[#8a6a32]"
+        ? "border-l-[#6b5e45]"
         : "border-l-border";
 
   return (
     <article
       className={cn(
-        "rounded-lg border border-border border-l-2 bg-card p-2.5 shadow-[0_1px_2px_rgba(28,25,23,0.04)]",
+        "rounded-[var(--radius)] border border-border border-l-2 bg-card p-2.5 transition-[background-color,box-shadow,transform] duration-150 hover:bg-[color-mix(in_srgb,var(--ink-wash)_40%,var(--card))]",
         border,
         dragging && "opacity-60",
       )}
@@ -508,7 +510,7 @@ function IdeaTable({
     <Surface className="overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full min-w-[1080px] text-left text-[13px]">
-          <thead className="border-b border-border text-xs text-muted-foreground">
+          <thead className="border-b border-rule font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
             <tr>
               {[
                 "Company",
@@ -526,7 +528,7 @@ function IdeaTable({
                 "Open Qs",
                 "",
               ].map((heading) => (
-                <th key={heading} className="px-2 py-2 font-medium whitespace-nowrap">
+                <th key={heading || "actions"} className="px-2 py-2 font-medium whitespace-nowrap">
                   {heading}
                 </th>
               ))}
@@ -537,7 +539,7 @@ function IdeaTable({
               const analyst = memberById(state, idea.leadAnalystId);
               const margin = ideaMargin(idea);
               return (
-                <tr key={idea.id} className="border-b border-border last:border-0">
+                <tr key={idea.id} className="blotter-row border-b border-border/80 last:border-0">
                   <td className="px-2 py-2">
                     <Link href={`/companies/${idea.id}`} className="font-medium hover:text-primary">
                       {idea.companyName}

@@ -59,7 +59,9 @@ export function SettingsView() {
       />
       <div className="grid gap-4 lg:grid-cols-2">
         <Surface className="space-y-4 p-4">
-          <h2 className="text-sm font-semibold">Workspace</h2>
+          <h2 className="font-mono text-[11px] font-medium tracking-[0.08em] text-muted-foreground uppercase">
+            Workspace
+          </h2>
           <Field label="Demo workspace name" htmlFor="workspace-name" error={nameError}>
             <Input
               id="workspace-name"
@@ -104,7 +106,9 @@ export function SettingsView() {
           </Field>
         </Surface>
         <Surface className="space-y-4 p-4">
-          <h2 className="text-sm font-semibold">Research data</h2>
+          <h2 className="font-mono text-[11px] font-medium tracking-[0.08em] text-muted-foreground uppercase">
+            Research data
+          </h2>
           <p className="text-sm leading-5 text-muted-foreground">
             Exports include the fictional companies, theses, questions, documents, meetings, and history stored in this browser.
           </p>

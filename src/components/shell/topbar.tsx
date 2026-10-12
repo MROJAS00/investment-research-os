@@ -22,7 +22,7 @@ export function TopBar() {
   }
 
   return (
-    <header className="sticky top-0 z-20 flex h-12 items-center gap-3 overflow-hidden border-b border-border bg-background/95 px-4 sm:px-6">
+    <header className="sticky top-0 z-20 flex h-11 items-center gap-3 overflow-hidden border-b border-border bg-[color-mix(in_srgb,var(--background)_88%,white)] px-4 backdrop-blur-[2px] sm:px-6">
       <Button
         variant="outline"
         size="icon"
@@ -32,12 +32,12 @@ export function TopBar() {
       >
         <Menu />
       </Button>
-      <p className="hidden min-w-0 text-xs text-muted-foreground sm:block">
-        <span className="font-medium text-foreground">Demo data</span>
-        <span className="px-1.5">·</span>
-        Illustrative figures, not investment advice
+      <p className="hidden min-w-0 font-mono text-[11px] tracking-[0.06em] text-muted-foreground uppercase sm:block">
+        Illustrative figures · not investment advice
       </p>
-      <p className="text-xs font-medium text-foreground sm:hidden">Demo data</p>
+      <p className="font-mono text-[11px] tracking-[0.06em] text-muted-foreground uppercase sm:hidden">
+        Demo
+      </p>
       <div className="ml-auto flex items-center gap-2">
         <label className="sr-only" htmlFor="acting-user">
           Acting as
@@ -63,7 +63,7 @@ export function TopBar() {
         </Button>
       </div>
       <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent side="left" className="w-60 bg-sidebar p-0 sm:max-w-60">
+        <SheetContent side="left" className="w-[13.5rem] bg-sidebar p-0 text-sidebar-foreground sm:max-w-[13.5rem]">
           <SheetTitle className="sr-only">Navigation</SheetTitle>
           <SidebarNav onNavigate={() => setOpen(false)} />
         </SheetContent>

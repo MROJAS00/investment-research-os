@@ -85,12 +85,14 @@ export function CommitteeView() {
                       setDossierId(meeting.agenda[0]?.id ?? "");
                     }}
                     className={cn(
-                      "w-full rounded-md px-2 py-2 text-left",
-                      selected?.id === meeting.id ? "bg-accent" : "hover:bg-muted",
+                      "w-full border-l-2 px-2 py-2 text-left transition-colors",
+                      selected?.id === meeting.id
+                        ? "border-primary bg-ink-wash"
+                        : "border-transparent hover:bg-muted/70",
                     )}
                   >
-                    <span className="block text-sm font-medium">{meeting.title}</span>
-                    <span className="block text-xs text-muted-foreground">
+                    <span className="block text-[13px] font-medium">{meeting.title}</span>
+                    <span className="block font-mono text-[11px] text-muted-foreground">
                       {formatDateTime(meeting.scheduledAt)} · {MEETING_STATUS_LABELS[meeting.status]}
                     </span>
                   </button>
@@ -104,7 +106,9 @@ export function CommitteeView() {
             <Surface className="p-4">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
-                  <h2 className="text-base font-semibold">{selected.title}</h2>
+                  <h2 className="font-heading text-lg font-semibold tracking-[-0.01em]">
+                    {selected.title}
+                  </h2>
                   <p className="mt-1 text-sm text-muted-foreground">
                     {formatDateTime(selected.scheduledAt)} · {selected.location} ·{" "}
                     {MEETING_STATUS_LABELS[selected.status]}

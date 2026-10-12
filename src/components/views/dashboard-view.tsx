@@ -1,8 +1,12 @@
 "use client";
 
-import { cn } from "cn";
 import Link from "next/link";
-import { PageHeader, PriorityBadge, Surface } from "@/components/common/ui-bits";
+import {
+  PageHeader,
+  PriorityBadge,
+  SectionLabel,
+  Surface,
+} from "@/components/common/ui-bits";
 import { formatDate } from "@/lib/format";
 import { EVENT_KIND_LABELS, STAGE_LABELS } from "@/lib/labels";
 import {
@@ -28,25 +32,25 @@ export function DashboardView() {
     {
       label: "Active ideas",
       value: metrics.activeIdeas,
-      detail: "Excludes invested and rejected outcomes.",
+      detail: "Excludes invested and rejected",
       href: "/pipeline",
     },
     {
       label: "Deep research",
       value: metrics.deepResearch,
-      detail: "Companies in the deep-research stage.",
+      detail: "In deep-research stage",
       href: "/pipeline?stage=deep_research",
     },
     {
-      label: "Upcoming committee",
+      label: "Upcoming IC",
       value: metrics.upcomingCommittee,
-      detail: "Scheduled sessions still ahead.",
+      detail: "Sessions still ahead",
       href: "/committee",
     },
     {
-      label: "Awaiting analyst action",
+      label: "Awaiting action",
       value: metrics.awaitingAction,
-      detail: "Active ideas with a research question past its due date.",
+      detail: "Overdue research questions",
       href: "/pipeline?overdue=1",
     },
   ];
@@ -58,23 +62,30 @@ export function DashboardView() {
         title="Overview"
         description="What needs a portfolio manager’s attention today. Every count is calculated from the ideas, questions, and meetings in this workspace."
       />
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        {cards.map((card) => (
-          <Link key={card.label} href={card.href} className="group block">
-            <Surface className="h-full px-4 py-3 transition-colors group-hover:border-primary/40">
-              <p className="text-xs font-medium text-muted-foreground">{card.label}</p>
-              <p className="mt-2 text-2xl font-semibold tabular-nums tracking-tight">
+
+      <Surface className="overflow-hidden">
+        <div className="grid sm:grid-cols-2 xl:grid-cols-4">
+          {cards.map((card) => (
+            <Link
+              key={card.label}
+              href={card.href}
+              className="metric-cell blotter-row block px-4 py-3 focus-visible:outline-none"
+            >
+              <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
+                {card.label}
+              </p>
+              <p className="mt-1 font-heading text-[1.75rem] leading-none font-semibold tabular-nums tracking-tight">
                 {card.value}
               </p>
-              <p className="mt-1 text-xs leading-4 text-muted-foreground">{card.detail}</p>
-            </Surface>
-          </Link>
-        ))}
-      </div>
+              <p className="mt-1.5 text-[12px] leading-4 text-muted-foreground">{card.detail}</p>
+            </Link>
+          ))}
+        </div>
+      </Surface>
 
-      <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1.4fr)_minmax(0,0.8fr)]">
+      <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1.45fr)_minmax(0,0.85fr)]">
         <section className="min-w-0">
-          <h2 className="mb-2 text-sm font-semibold">Priority attention</h2>
+          <SectionLabel>Priority attention</SectionLabel>
           <Surface className="overflow-hidden">
             {attention.length === 0 ? (
               <p className="px-4 py-8 text-sm text-muted-foreground">
@@ -82,8 +93,8 @@ export function DashboardView() {
               </p>
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead className="border-b border-border text-left text-xs text-muted-foreground">
+                <table className="w-full text-[13px]">
+                  <thead className="border-b border-rule text-left font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
                     <tr>
                       <th className="px-3 py-2 font-medium">Company</th>
                       <th className="px-3 py-2 font-medium">Reason</th>
@@ -97,7 +108,7 @@ export function DashboardView() {
                       const owner = memberById(state, item.ownerId);
                       if (!idea) return null;
                       return (
-                        <tr key={item.id} className="border-b border-border last:border-0">
+                        <tr key={item.id} className="blotter-row border-b border-border/80 last:border-0">
                           <td className="px-3 py-2.5 align-top">
                             <Link
                               href={`/companies/${idea.id}`}
@@ -105,7 +116,9 @@ export function DashboardView() {
                             >
                               {idea.companyName}
                             </Link>
-                            <div className="text-xs text-muted-foreground">{idea.ticker}</div>
+                            <div className="font-mono text-[11px] text-muted-foreground">
+                              {idea.ticker}
+                            </div>
                           </td>
                           <td className="max-w-md px-3 py-2.5 align-top whitespace-normal text-muted-foreground">
                             {item.reason}
@@ -127,13 +140,13 @@ export function DashboardView() {
         </section>
 
         <section className="min-w-0">
-          <h2 className="mb-2 text-sm font-semibold">Upcoming events</h2>
+          <SectionLabel>Upcoming events</SectionLabel>
           <Surface>
-            <ul className="divide-y divide-border">
+            <ul className="divide-y divide-border/80">
               {events.map((event) => (
-                <li key={event.id} className="px-3 py-2.5">
+                <li key={event.id} className="blotter-row px-3 py-2.5">
                   <div className="flex items-baseline justify-between gap-3">
-                    <p className="text-sm font-medium">
+                    <p className="text-[13px] font-medium">
                       {event.companyId ? (
                         <Link href={`/companies/${event.companyId}`} className="hover:text-primary">
                           {event.title}
@@ -146,11 +159,11 @@ export function DashboardView() {
                         event.title
                       )}
                     </p>
-                    <time className="shrink-0 text-xs text-muted-foreground tabular-nums">
+                    <time className="shrink-0 font-mono text-[11px] text-muted-foreground tabular-nums">
                       {formatDate(event.date)}
                     </time>
                   </div>
-                  <p className="mt-0.5 text-xs text-muted-foreground">
+                  <p className="mt-0.5 text-[12px] text-muted-foreground">
                     {EVENT_KIND_LABELS[event.kind]}
                     {event.overdue ? " · Overdue" : ""}
                     {event.detail ? ` · ${event.detail}` : ""}
@@ -163,23 +176,25 @@ export function DashboardView() {
       </div>
 
       <section className="mt-6">
-        <h2 className="mb-2 text-sm font-semibold">Research pipeline</h2>
-        <div className="grid grid-cols-2 gap-2 md:grid-cols-4 xl:grid-cols-7">
-          {ACTIVE_STAGES.map((stage) => (
-            <StageCount key={stage} stage={stage} count={counts[stage]} />
-          ))}
-        </div>
-        <p className="mt-2 text-xs text-muted-foreground">
+        <SectionLabel>Research pipeline</SectionLabel>
+        <Surface className="overflow-hidden">
+          <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7">
+            {ACTIVE_STAGES.map((stage) => (
+              <StageCount key={stage} stage={stage} count={counts[stage]} />
+            ))}
+          </div>
+        </Surface>
+        <p className="mt-2 text-[12px] text-muted-foreground">
           Historical outcomes: {counts.invested} invested, {counts.rejected} rejected. Those are filters, not active columns.
         </p>
       </section>
 
       <section className="mt-6 min-w-0">
-        <h2 className="mb-2 text-sm font-semibold">Recently updated theses</h2>
+        <SectionLabel>Recently updated theses</SectionLabel>
         <Surface className="overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="border-b border-border text-left text-xs text-muted-foreground">
+            <table className="w-full text-[13px]">
+              <thead className="border-b border-rule text-left font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
                 <tr>
                   <th className="px-3 py-2 font-medium">Company</th>
                   <th className="px-3 py-2 font-medium">Analyst</th>
@@ -191,7 +206,7 @@ export function DashboardView() {
                 {theses.map((idea) => {
                   const analyst = memberById(state, idea.leadAnalystId);
                   return (
-                    <tr key={idea.id} className="border-b border-border last:border-0">
+                    <tr key={idea.id} className="blotter-row border-b border-border/80 last:border-0">
                       <td className="px-3 py-2.5">
                         <Link
                           href={`/companies/${idea.id}?tab=thesis`}
@@ -201,7 +216,7 @@ export function DashboardView() {
                         </Link>
                       </td>
                       <td className="px-3 py-2.5 whitespace-nowrap">{analyst?.name}</td>
-                      <td className="px-3 py-2.5 whitespace-nowrap text-muted-foreground">
+                      <td className="px-3 py-2.5 whitespace-nowrap font-mono text-[12px] text-muted-foreground">
                         {formatDate(idea.thesis.lastEditedAt)}
                       </td>
                       <td className="px-3 py-2.5 whitespace-normal text-muted-foreground">
@@ -221,15 +236,12 @@ export function DashboardView() {
 
 function StageCount({ stage, count }: { stage: Stage; count: number }) {
   return (
-    <Link href={`/pipeline?stage=${stage}`} className="group">
-      <Surface
-        className={cn(
-          "px-3 py-2.5 transition-colors group-hover:border-primary/40",
-        )}
-      >
-        <p className="text-lg font-semibold tabular-nums">{count}</p>
-        <p className="text-xs leading-4 text-muted-foreground">{STAGE_LABELS[stage]}</p>
-      </Surface>
+    <Link
+      href={`/pipeline?stage=${stage}`}
+      className="metric-cell blotter-row block px-3 py-2.5 focus-visible:outline-none"
+    >
+      <p className="font-heading text-xl font-semibold tabular-nums leading-none">{count}</p>
+      <p className="mt-1 text-[11px] leading-4 text-muted-foreground">{STAGE_LABELS[stage]}</p>
     </Link>
   );
 }

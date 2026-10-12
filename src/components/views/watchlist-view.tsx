@@ -137,7 +137,7 @@ export function WatchlistView() {
         <Surface className="mt-4 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[1100px] text-left text-[13px]">
-              <thead className="border-b border-border text-xs text-muted-foreground">
+              <thead className="border-b border-rule font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
                 <tr>
                   {[
                     "Company",
@@ -152,7 +152,7 @@ export function WatchlistView() {
                     "Last reviewed",
                     "",
                   ].map((heading) => (
-                    <th key={heading} className="px-2 py-2 font-medium whitespace-nowrap">
+                    <th key={heading || "actions"} className="px-2 py-2 font-medium whitespace-nowrap">
                       {heading}
                     </th>
                   ))}
@@ -163,7 +163,7 @@ export function WatchlistView() {
                   const analystName = memberById(state, idea.leadAnalystId);
                   const cheap = cheapVersusValuation(idea);
                   return (
-                    <tr key={idea.id} className="border-b border-border align-top last:border-0">
+                    <tr key={idea.id} className="blotter-row border-b border-border/80 align-top last:border-0">
                       <td className="px-2 py-2">
                         <Link
                           href={`/companies/${idea.id}`}
@@ -171,7 +171,9 @@ export function WatchlistView() {
                         >
                           {idea.companyName}
                         </Link>
-                        <div className="text-xs text-muted-foreground">{idea.ticker}</div>
+                        <div className="font-mono text-[11px] text-muted-foreground">
+                          {idea.ticker}
+                        </div>
                       </td>
                       <td className="px-2 py-2 whitespace-nowrap tabular-nums">
                         {formatMoney(idea.valuation.currentPrice, state.settings.currency)}
@@ -192,10 +194,10 @@ export function WatchlistView() {
                       <td className="max-w-xs px-2 py-2 whitespace-normal">
                         <div className="mb-1 flex flex-wrap gap-1">
                           <PriorityBadge priority={idea.priority} />
-                          <span className="inline-flex h-5 items-center rounded-md bg-muted px-1.5 text-[11px] font-medium">
+                          <span className="inline-flex h-5 items-center rounded-[2px] border border-border bg-muted/70 px-1.5 font-mono text-[10px] tracking-[0.04em] uppercase">
                             {idea.waitKind ? WAIT_KIND_LABELS[idea.waitKind] : "Unspecified"}
                           </span>
-                          <span className="inline-flex h-5 items-center rounded-md bg-secondary px-1.5 text-[11px] font-medium">
+                          <span className="inline-flex h-5 items-center rounded-[2px] border border-border bg-secondary px-1.5 font-mono text-[10px] tracking-[0.04em] uppercase">
                             {idea.waitKind === "thesis"
                               ? "Thesis deteriorated"
                               : cheap

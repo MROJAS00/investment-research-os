@@ -1,14 +1,27 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { IBM_Plex_Mono, IBM_Plex_Sans, Source_Serif_4 } from "next/font/google";
 import { AppShell } from "@/components/shell/app-shell";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { StoreProvider } from "@/lib/store";
 import "./globals.css";
 
-const geist = Geist({
+const plexSans = IBM_Plex_Sans({
   subsets: ["latin"],
-  variable: "--font-geist-sans",
+  weight: ["400", "500", "600"],
+  variable: "--font-plex-sans",
+});
+
+const sourceSerif = Source_Serif_4({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-source-serif",
+});
+
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-plex-mono",
 });
 
 export const metadata: Metadata = {
@@ -26,7 +39,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geist.variable} h-full`}>
+    <html
+      lang="en"
+      className={`${plexSans.variable} ${sourceSerif.variable} ${plexMono.variable} h-full`}
+    >
       <body className="min-h-full antialiased">
         <StoreProvider>
           <TooltipProvider delay={300}>

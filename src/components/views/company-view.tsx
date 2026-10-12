@@ -148,26 +148,28 @@ export function CompanyView() {
 
   return (
     <div>
-      <p className="mb-2 text-xs text-muted-foreground">
+      <p className="mb-2 font-mono text-[11px] tracking-[0.06em] text-muted-foreground uppercase">
         <Link href="/pipeline" className="hover:text-foreground">
           Idea Pipeline
         </Link>
-        <span className="px-1">/</span>
-        {idea.companyName}
+        <span className="px-1.5 normal-case tracking-normal">/</span>
+        <span className="normal-case tracking-normal">{idea.companyName}</span>
       </p>
-      <div className="flex flex-col gap-3 border-b border-border pb-4 lg:flex-row lg:items-start lg:justify-between">
+      <div className="flex flex-col gap-3 border-b border-rule pb-4 lg:flex-row lg:items-start lg:justify-between">
         <div className="min-w-0">
-          <h1 className="text-xl font-semibold tracking-tight">
+          <h1 className="font-heading text-[1.65rem] leading-tight font-semibold tracking-[-0.015em]">
             {idea.companyName}{" "}
-            <span className="text-base font-medium text-muted-foreground">{idea.ticker}</span>
+            <span className="ml-1 font-mono text-sm font-medium tracking-[0.04em] text-muted-foreground uppercase">
+              {idea.ticker}
+            </span>
           </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="mt-1 text-[13px] text-muted-foreground">
             {idea.country} · {idea.sector}
           </p>
-          <div className="mt-2 flex flex-wrap items-center gap-1.5">
+          <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
             <StageBadge stage={idea.stage} />
             <PriorityBadge priority={idea.priority} />
-            <span className="text-xs text-muted-foreground">
+            <span className="text-[12px] text-muted-foreground">
               {analyst?.name} · Conviction {idea.conviction} · Reviewed{" "}
               {formatDate(idea.thesis.lastSubstantiveReview)}
             </span>
@@ -380,14 +382,14 @@ function ThesisTab() {
         ) : (
           <Surface className="px-4">
             {THESIS_FIELDS.map((field) => (
-              <section key={field.key} className="border-b border-border py-3 last:border-0">
-                <h2 className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+              <section key={field.key} className="border-b border-border/80 py-3 last:border-0">
+                <h2 className="font-mono text-[10px] font-medium tracking-[0.08em] text-muted-foreground uppercase">
                   {field.label}
                 </h2>
-                <p className="mt-1 text-sm leading-6">{idea.thesis[field.key]}</p>
+                <p className="mt-1 text-[13px] leading-6">{idea.thesis[field.key]}</p>
               </section>
             ))}
-            <div className="grid gap-4 py-3 md:grid-cols-3">
+            <div className="grid gap-4 border-t border-rule py-3 md:grid-cols-3">
               {(
                 [
                   ["Bull case", idea.thesis.bullCase],
@@ -395,11 +397,11 @@ function ThesisTab() {
                   ["Bear case", idea.thesis.bearCase],
                 ] as const
               ).map(([label, text]) => (
-                <section key={label}>
-                  <h2 className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                <section key={label} className="md:border-l md:border-border/80 md:pl-3 md:first:border-0 md:first:pl-0">
+                  <h2 className="font-mono text-[10px] font-medium tracking-[0.08em] text-muted-foreground uppercase">
                     {label}
                   </h2>
-                  <p className="mt-1 text-sm leading-6">{text}</p>
+                  <p className="mt-1 text-[13px] leading-6">{text}</p>
                 </section>
               ))}
             </div>
@@ -408,7 +410,7 @@ function ThesisTab() {
       </div>
       <aside className="space-y-3">
         <Surface className="p-4">
-          <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+          <p className="font-mono text-[10px] font-medium tracking-[0.08em] text-muted-foreground uppercase">
             Simulated assistant
           </p>
           <p className="mt-1 text-xs leading-5 text-muted-foreground">
@@ -525,7 +527,9 @@ function ValuationTab() {
   return (
     <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_18rem]">
       <Surface className="p-4">
-        <h2 className="text-sm font-semibold">Illustrative assumptions</h2>
+        <h2 className="font-mono text-[11px] font-medium tracking-[0.08em] text-muted-foreground uppercase">
+          Illustrative assumptions
+        </h2>
         <IllustrativeNote>
           Source figures are EUR
           {currency === "EUR"
@@ -569,8 +573,10 @@ function ValuationTab() {
         </div>
       </Surface>
       <Surface className="p-4">
-        <h2 className="text-sm font-semibold">Base-case margin of safety</h2>
-        <p className="mt-3 text-3xl font-semibold tabular-nums tracking-tight">
+        <h2 className="font-mono text-[11px] font-medium tracking-[0.08em] text-muted-foreground uppercase">
+          Base-case margin of safety
+        </h2>
+        <p className="mt-3 font-heading text-[2rem] font-semibold tabular-nums tracking-tight">
           {formatPercent(margin)}
         </p>
         <p className="mt-2 text-sm text-muted-foreground">
