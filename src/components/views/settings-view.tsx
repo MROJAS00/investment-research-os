@@ -64,7 +64,7 @@ export function SettingsView() {
       />
       <div className="grid gap-4 lg:grid-cols-2">
         <Surface className="space-y-4 p-4">
-          <h2 className="font-mono text-[11px] font-medium tracking-[0.08em] text-muted-foreground uppercase">
+          <h2 className="text-[13px] font-semibold tracking-tight text-foreground">
             Workspace
           </h2>
           <Field
@@ -115,7 +115,7 @@ export function SettingsView() {
           </Field>
         </Surface>
         <Surface className="space-y-4 p-4">
-          <h2 className="font-mono text-[11px] font-medium tracking-[0.08em] text-muted-foreground uppercase">
+          <h2 className="text-[13px] font-semibold tracking-tight text-foreground">
             Research data
           </h2>
           <p className="text-sm leading-5 text-muted-foreground">

@@ -68,7 +68,7 @@ export function TeamView() {
               </p>
               <dl className="mt-3 flex flex-wrap items-baseline gap-x-5 gap-y-1 border-y border-rule py-2">
                 <div>
-                  <dt className="inline font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
+                  <dt className="inline text-[12px] font-medium tracking-tight text-muted-foreground">
                     Ideas{" "}
                   </dt>
                   <dd className="inline text-xl font-semibold tabular-nums">
@@ -76,7 +76,7 @@ export function TeamView() {
                   </dd>
                 </div>
                 <div>
-                  <dt className="inline font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
+                  <dt className="inline text-[12px] font-medium tracking-tight text-muted-foreground">
                     Questions{" "}
                   </dt>
                   <dd className="inline text-xl font-semibold tabular-nums">
@@ -84,7 +84,7 @@ export function TeamView() {
                   </dd>
                 </div>
                 <div>
-                  <dt className="inline font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
+                  <dt className="inline text-[12px] font-medium tracking-tight text-muted-foreground">
                     Overdue{" "}
                   </dt>
                   <dd className="inline text-xl font-semibold tabular-nums text-primary">
@@ -92,7 +92,7 @@ export function TeamView() {
                   </dd>
                 </div>
               </dl>
-              <h3 className="mt-4 font-mono text-[10px] font-medium tracking-[0.08em] text-muted-foreground uppercase">
+              <h3 className="mt-4 text-[12px] font-semibold tracking-tight text-foreground">
                 Ideas
               </h3>
               <ul className="mt-1 space-y-2">
@@ -128,7 +128,7 @@ export function TeamView() {
                   ))
                 )}
               </ul>
-              <h3 className="mt-4 font-mono text-[10px] font-medium tracking-[0.08em] text-muted-foreground uppercase">
+              <h3 className="mt-4 text-[12px] font-semibold tracking-tight text-foreground">
                 Questions
               </h3>
               <ul className="mt-1 space-y-2">

@@ -35,18 +35,18 @@ export function PageHeader({
   actions?: ReactNode;
 }) {
   return (
-    <div className="mb-4 flex flex-col gap-2 border-b border-rule pb-3 sm:flex-row sm:items-end sm:justify-between">
+    <div className="mb-5 flex flex-col gap-2 pb-1 sm:flex-row sm:items-end sm:justify-between">
       <div className="min-w-0">
         {eyebrow ? (
-          <p className="font-mono text-[11px] tracking-[0.1em] text-muted-foreground uppercase">
+          <p className="text-[12px] font-medium tracking-tight text-muted-foreground">
             {eyebrow}
           </p>
         ) : null}
-        <h1 className="text-[1.35rem] leading-tight font-semibold tracking-tight text-foreground">
+        <h1 className="text-[1.4rem] leading-tight font-semibold tracking-tight text-foreground">
           {title}
         </h1>
         {description ? (
-          <p className="mt-1 max-w-2xl text-[13px] leading-5 text-muted-foreground">
+          <p className="mt-1.5 max-w-2xl text-[13px] leading-5 text-muted-foreground">
             {description}
           </p>
         ) : null}
@@ -89,7 +89,7 @@ export function Field({
 }) {
   return (
     <div className="grid gap-1.5">
-      <Label htmlFor={htmlFor} className="font-mono text-[11px] tracking-[0.06em] uppercase">
+      <Label htmlFor={htmlFor} className="text-[12px] font-medium tracking-tight">
         {label}
       </Label>
       {children}
@@ -153,7 +153,7 @@ export function PriorityBadge({ priority }: { priority: Priority }) {
 
 export function StageBadge({ stage }: { stage: Stage }) {
   return (
-    <span className="font-mono text-[10px] tracking-[0.08em] text-foreground/80 uppercase">
+    <span className="text-[12px] font-medium tracking-tight text-foreground/80">
       {STAGE_LABELS[stage]}
     </span>
   );
@@ -161,7 +161,7 @@ export function StageBadge({ stage }: { stage: Stage }) {
 
 export function ConvictionBadge({ conviction }: { conviction: Conviction }) {
   return (
-    <span className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
+    <span className="text-[12px] font-medium tracking-tight text-muted-foreground">
       {CONVICTION_LABELS[conviction]}
     </span>
   );
@@ -177,7 +177,7 @@ export function ThesisStatusBadge({ status }: { status: ThesisStatus }) {
           ? "text-primary"
           : "text-muted-foreground";
   return (
-    <span className={cn("font-mono text-[10px] tracking-[0.08em] uppercase", emphasis)}>
+    <span className={cn("text-[12px] font-medium tracking-tight", emphasis)}>
       {THESIS_STATUS_LABELS[status]}
     </span>
   );
@@ -205,7 +205,7 @@ export function LoadingState() {
 
 export function SectionLabel({ children }: { children: ReactNode }) {
   return (
-    <h2 className="mb-2 font-mono text-[11px] tracking-[0.1em] text-muted-foreground uppercase">
+    <h2 className="mb-2.5 text-[13px] font-semibold tracking-tight text-foreground">
       {children}
     </h2>
   );

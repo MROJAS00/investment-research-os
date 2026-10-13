@@ -151,7 +151,7 @@ export function WatchlistView() {
         <Surface className="mt-4 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[1100px] text-left text-[13px]">
-              <thead className="border-b border-rule font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
+              <thead className="border-b border-rule text-[12px] text-muted-foreground">
                 <tr>
                   {[
                     "Company",
@@ -225,12 +225,12 @@ export function WatchlistView() {
                       <td className="max-w-xs px-2 py-2 whitespace-normal">
                         <div className="mb-1 flex flex-wrap gap-1">
                           <PriorityBadge priority={idea.priority} />
-                          <span className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
+                          <span className="text-[12px] font-medium tracking-tight text-muted-foreground">
                             {idea.waitKind
                               ? WAIT_KIND_LABELS[idea.waitKind]
                               : "Unspecified"}
                           </span>
-                          <span className="font-mono text-[10px] tracking-[0.08em] text-foreground/70 uppercase">
+                          <span className="text-[12px] font-medium tracking-tight text-foreground/70">
                             {idea.waitKind === "thesis"
                               ? "Thesis deteriorated"
                               : cheap

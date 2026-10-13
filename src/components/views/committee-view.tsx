@@ -321,7 +321,7 @@ function Dossier({
   const currency = state.settings.currency;
   return (
     <div className="mt-3 rounded-md border border-border bg-muted/30 p-3">
-      <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+      <p className="text-[12px] font-semibold tracking-tight text-foreground">
         Dossier for {meeting.title}
       </p>
       <p className="mt-1 text-sm">
@@ -330,14 +330,14 @@ function Dossier({
       <IllustrativeNote />
       <div className="mt-3 grid gap-3 md:grid-cols-2">
         <section>
-          <h3 className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+          <h3 className="text-[12px] font-semibold tracking-tight text-foreground">
             Thesis
           </h3>
           <p className="mt-1 text-sm leading-5">{idea.thesis.whyMispriced}</p>
           <p className="mt-2 text-sm leading-5">{idea.thesis.baseCase}</p>
         </section>
         <section>
-          <h3 className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+          <h3 className="text-[12px] font-semibold tracking-tight text-foreground">
             Valuation
           </h3>
           <ul className="mt-1 space-y-1 text-sm">
@@ -355,21 +355,21 @@ function Dossier({
           </ul>
         </section>
         <section>
-          <h3 className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+          <h3 className="text-[12px] font-semibold tracking-tight text-foreground">
             Bull and bear
           </h3>
           <p className="mt-1 text-sm leading-5">{idea.thesis.bullCase}</p>
           <p className="mt-2 text-sm leading-5">{idea.thesis.bearCase}</p>
         </section>
         <section>
-          <h3 className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+          <h3 className="text-[12px] font-semibold tracking-tight text-foreground">
             Main risks
           </h3>
           <p className="mt-1 text-sm leading-5">{idea.thesis.mainRisks}</p>
         </section>
       </div>
       <section className="mt-3">
-        <h3 className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+        <h3 className="text-[12px] font-semibold tracking-tight text-foreground">
           Unresolved questions
         </h3>
         {openQuestions.length === 0 ? (
@@ -383,7 +383,7 @@ function Dossier({
         )}
       </section>
       <section className="mt-3">
-        <h3 className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+        <h3 className="text-[12px] font-semibold tracking-tight text-foreground">
           Documents to review
         </h3>
         {idea.documents.length === 0 ? (

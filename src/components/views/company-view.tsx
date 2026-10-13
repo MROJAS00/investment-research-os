@@ -167,18 +167,18 @@ export function CompanyView() {
 
   return (
     <div>
-      <p className="mb-2 font-mono text-[11px] tracking-[0.08em] text-muted-foreground uppercase">
+      <p className="mb-2 text-[12px] font-medium tracking-tight text-muted-foreground">
         <Link href="/pipeline" className="hover:text-foreground">
           Pipeline
         </Link>
-        <span className="px-1.5 normal-case tracking-normal">/</span>
-        <span className=" normal-case tracking-normal">{idea.companyName}</span>
+        <span className="px-1.5 text-muted-foreground/70">/</span>
+        <span>{idea.companyName}</span>
       </p>
       <div className="flex flex-col gap-3 border-b border-rule pb-4 lg:flex-row lg:items-start lg:justify-between">
         <div className="min-w-0">
           <h1 className="text-[1.5rem] leading-tight font-semibold tracking-tight">
             {idea.companyName}{" "}
-            <span className="ml-1 font-mono text-sm font-medium tracking-[0.06em] text-muted-foreground uppercase">
+            <span className="ml-1 font-mono text-sm font-medium tracking-tight text-muted-foreground">
               {idea.ticker}
             </span>
           </h1>
@@ -435,7 +435,7 @@ function ThesisTab() {
                 key={field.key}
                 className="border-b border-border/80 py-3 last:border-0"
               >
-                <h2 className="font-mono text-[10px] font-medium tracking-[0.08em] text-muted-foreground uppercase">
+                <h2 className="text-[12px] font-semibold tracking-tight text-foreground">
                   {field.label}
                 </h2>
                 <p className="mt-1 text-[13px] leading-6">
@@ -455,7 +455,7 @@ function ThesisTab() {
                   key={label}
                   className="md:border-l md:border-border/80 md:pl-3 md:first:border-0 md:first:pl-0"
                 >
-                  <h2 className="font-mono text-[10px] font-medium tracking-[0.08em] text-muted-foreground uppercase">
+                  <h2 className="text-[12px] font-semibold tracking-tight text-foreground">
                     {label}
                   </h2>
                   <p className="mt-1 text-[13px] leading-6">{text}</p>
@@ -467,7 +467,7 @@ function ThesisTab() {
       </div>
       <aside className="space-y-3">
         <Surface className="p-4">
-          <p className="font-mono text-[10px] font-medium tracking-[0.08em] text-muted-foreground uppercase">
+          <p className="text-[12px] font-semibold tracking-tight text-foreground">
             Simulated assistant
           </p>
           <p className="mt-1 text-xs leading-5 text-muted-foreground">
@@ -607,7 +607,7 @@ function ValuationTab() {
   return (
     <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_18rem]">
       <Surface className="p-4">
-        <h2 className="font-mono text-[11px] font-medium tracking-[0.08em] text-muted-foreground uppercase">
+        <h2 className="text-[13px] font-semibold tracking-tight text-foreground">
           Illustrative assumptions
         </h2>
         <IllustrativeNote>
@@ -662,7 +662,7 @@ function ValuationTab() {
         </div>
       </Surface>
       <Surface className="p-4">
-        <h2 className="font-mono text-[11px] font-medium tracking-[0.08em] text-muted-foreground uppercase">
+        <h2 className="text-[13px] font-semibold tracking-tight text-foreground">
           Base-case margin of safety
         </h2>
         <p className="mt-3 text-[2rem] font-semibold tabular-nums tracking-tight">

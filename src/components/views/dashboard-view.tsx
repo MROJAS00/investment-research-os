@@ -55,32 +55,32 @@ export function DashboardView() {
       />
 
       {/* Asymmetric blotter: one dominant figure + inline ticker — not a 4-up card grid */}
-      <div className="ticker-strip flex flex-col gap-4 px-3 py-3 sm:flex-row sm:items-end sm:gap-8 sm:px-4">
+      <div className="ticker-strip flex flex-col gap-4 px-4 py-4 sm:flex-row sm:items-end sm:gap-8">
         <Link
           href="/pipeline?overdue=1"
-          className="group min-w-0 sm:max-w-xs sm:border-r sm:border-rule sm:pr-8"
+          className="group metric-pulse min-w-0 sm:max-w-xs sm:border-r sm:border-rule sm:pr-8"
         >
-          <p className="font-mono text-[10px] tracking-[0.1em] text-muted-foreground uppercase">
+          <p className="text-[12px] font-medium tracking-tight text-muted-foreground">
             Awaiting analyst action
           </p>
-          <p className="mt-1 text-[3rem] leading-none font-semibold tabular-nums tracking-tight text-primary group-hover:underline group-hover:decoration-1 group-hover:underline-offset-4">
+          <p className="mt-1.5 text-[3.1rem] leading-none font-semibold tabular-nums tracking-tight text-primary transition-colors group-hover:text-[#066872]">
             {metrics.awaitingAction}
           </p>
           <p className="mt-2 text-[13px] leading-5 text-foreground/70">
             Active ideas with a research question past its due date.
           </p>
         </Link>
-        <div className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-6 gap-y-2 sm:pb-1">
+        <div className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-7 gap-y-2 sm:pb-1">
           {supporting.map((item) => (
             <Link
               key={item.label}
               href={item.href}
-              className="inline-flex items-baseline gap-2 border-b border-transparent hover:border-foreground/40"
+              className="inline-flex items-baseline gap-2 border-b border-transparent transition-colors hover:border-primary/50"
             >
-              <span className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
+              <span className="text-[12px] font-medium tracking-tight text-muted-foreground">
                 {item.label}
               </span>
-              <span className="text-[1.25rem] font-semibold tabular-nums leading-none">
+              <span className="text-[1.35rem] font-semibold tabular-nums leading-none">
                 {item.value}
               </span>
             </Link>
@@ -100,12 +100,12 @@ export function DashboardView() {
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-[13px]">
-                  <thead className="border-b border-foreground/20 text-left font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
+                  <thead className="border-b border-rule text-left text-[12px] text-muted-foreground">
                     <tr>
-                      <th className="px-3 py-2 font-medium">Company</th>
-                      <th className="px-3 py-2 font-medium">Reason</th>
-                      <th className="px-3 py-2 font-medium">Owner</th>
-                      <th className="px-3 py-2 font-medium">Priority</th>
+                      <th className="px-3 py-2.5 font-medium">Company</th>
+                      <th className="px-3 py-2.5 font-medium">Reason</th>
+                      <th className="px-3 py-2.5 font-medium">Owner</th>
+                      <th className="px-3 py-2.5 font-medium">Priority</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -152,9 +152,9 @@ export function DashboardView() {
 
         <section className="min-w-0">
           <SectionLabel>Upcoming events</SectionLabel>
-          <ul className="divide-y divide-rule border-y border-rule">
+          <ul className="divide-y divide-rule overflow-hidden rounded-[var(--radius)] border border-rule bg-paper">
             {events.map((event) => (
-              <li key={event.id} className="blotter-row px-1 py-2.5">
+              <li key={event.id} className="blotter-row px-3 py-2.5">
                 <div className="flex items-baseline justify-between gap-3">
                   <p className="text-[13px] font-semibold tracking-tight">
                     {event.companyId ? (
@@ -205,12 +205,12 @@ export function DashboardView() {
         <Surface className="overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-[13px]">
-              <thead className="border-b border-foreground/20 text-left font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
+              <thead className="border-b border-rule text-left text-[12px] text-muted-foreground">
                 <tr>
-                  <th className="px-3 py-2 font-medium">Company</th>
-                  <th className="px-3 py-2 font-medium">Analyst</th>
-                  <th className="px-3 py-2 font-medium">Updated</th>
-                  <th className="px-3 py-2 font-medium">Change</th>
+                  <th className="px-3 py-2.5 font-medium">Company</th>
+                  <th className="px-3 py-2.5 font-medium">Analyst</th>
+                  <th className="px-3 py-2.5 font-medium">Updated</th>
+                  <th className="px-3 py-2.5 font-medium">Change</th>
                 </tr>
               </thead>
               <tbody>
@@ -259,7 +259,7 @@ function StageCount({ stage, count }: { stage: Stage; count: number }) {
       <span className="text-lg font-semibold tabular-nums leading-none">
         {count}
       </span>
-      <span className="font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
+      <span className="text-[12px] font-medium tracking-tight text-muted-foreground">
         {STAGE_LABELS[stage]}
       </span>
     </Link>

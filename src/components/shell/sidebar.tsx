@@ -31,7 +31,7 @@ function NavLinks({
   const pathname = usePathname();
 
   return (
-    <nav aria-label="Primary" className={cn("flex flex-wrap items-baseline gap-x-5 gap-y-1", className)}>
+    <nav aria-label="Primary" className={cn("flex flex-wrap items-center gap-x-4 gap-y-1", className)}>
       {NAV.map((item) => {
         const active =
           pathname === item.href ||
@@ -43,11 +43,12 @@ function NavLinks({
             href={item.href}
             onClick={onNavigate}
             aria-current={active ? "page" : undefined}
+            data-active={active ? "true" : "false"}
             className={cn(
-              "text-[13px] tracking-tight transition-colors",
+              "nav-link text-[13px] tracking-tight",
               active
-                ? "font-semibold text-primary"
-                : "text-foreground/65 hover:text-foreground",
+                ? "font-semibold text-foreground"
+                : "font-medium text-foreground/55 hover:text-foreground",
             )}
           >
             {item.label}
@@ -58,7 +59,7 @@ function NavLinks({
   );
 }
 
-/** Research masthead — no dark product sidebar. */
+/** Light product rail — 2020s console, not a newspaper masthead. */
 export function ResearchMasthead() {
   const { state, updateSettings } = useWorkspace();
   const [open, setOpen] = useState(false);
@@ -71,23 +72,23 @@ export function ResearchMasthead() {
   }
 
   return (
-    <header className="sticky top-0 z-30 border-b border-rule bg-paper/95 backdrop-blur-[1px]">
-      <div className="mx-auto flex w-full max-w-[1440px] flex-wrap items-end gap-x-6 gap-y-2 px-4 py-2.5 sm:px-6 lg:px-8">
-        <div className="min-w-0 flex-1">
-          <div className="flex items-baseline gap-3">
-            <Link
-              href="/dashboard"
-              className="wordmark text-[1.55rem] leading-none font-semibold tracking-[-0.02em] text-foreground"
-            >
-              Longview
-            </Link>
-            <span className="hidden font-mono text-[10px] tracking-[0.1em] text-muted-foreground uppercase sm:inline">
-              {state.settings.workspaceName}
-            </span>
-          </div>
-          <p className="mt-1 font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
-            Research console · illustrative figures
-          </p>
+    <header className="sticky top-0 z-30 border-b border-rule/90 bg-paper/90 backdrop-blur-[2px]">
+      <div className="mx-auto flex w-full max-w-[1440px] items-center gap-x-5 gap-y-2 px-4 py-2.5 sm:px-6 lg:px-8">
+        <div className="flex min-w-0 items-center gap-3">
+          <Link
+            href="/dashboard"
+            className="wordmark shrink-0 text-[1.35rem] leading-none font-semibold text-foreground"
+          >
+            Longview
+          </Link>
+          <span className="hidden h-4 w-px bg-rule sm:block" aria-hidden />
+          <span className="hidden truncate text-[12px] font-medium text-muted-foreground sm:inline">
+            {state.settings.workspaceName}
+          </span>
+        </div>
+
+        <div className="ml-2 hidden min-w-0 flex-1 lg:block">
+          <NavLinks />
         </div>
 
         <div className="ml-auto flex items-center gap-2">
@@ -103,7 +104,9 @@ export function ResearchMasthead() {
           <label className="sr-only" htmlFor="acting-user">
             Acting as
           </label>
-          <span className="hidden text-xs text-muted-foreground md:inline">Acting as</span>
+          <span className="hidden text-[12px] font-medium text-muted-foreground md:inline">
+            Acting as
+          </span>
           <NativeSelect
             id="acting-user"
             ariaLabel="Acting as"
@@ -121,12 +124,6 @@ export function ResearchMasthead() {
           <Button variant="outline" size="sm" onClick={copyLink}>
             Copy link
           </Button>
-        </div>
-      </div>
-
-      <div className="border-t border-rule/80 bg-[color-mix(in_srgb,var(--paper)_94%,white)]">
-        <div className="mx-auto hidden w-full max-w-[1440px] items-center px-4 py-1.5 sm:px-6 lg:flex lg:px-8">
-          <NavLinks />
         </div>
       </div>
 

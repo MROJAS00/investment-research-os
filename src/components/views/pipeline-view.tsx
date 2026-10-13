@@ -354,7 +354,7 @@ export function PipelineView() {
                     if (id) onDrop(stage, id);
                   }}
                 >
-                  <div className="mb-2 flex items-baseline justify-between border-b border-foreground/20 pb-1">
+                  <div className="mb-2 flex items-baseline justify-between border-b border-rule pb-1">
                     <h2 className="text-[13px] font-semibold tracking-tight">
                       {STAGE_LABELS[stage]}
                     </h2>
@@ -566,7 +566,7 @@ function IdeaTable({
     <Surface className="overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full min-w-[1080px] text-left text-[13px]">
-          <thead className="border-b border-rule font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
+          <thead className="border-b border-rule text-[12px] text-muted-foreground">
             <tr>
               {[
                 "Company",
