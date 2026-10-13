@@ -39,11 +39,13 @@ export function TeamView() {
         description="Who is carrying which ideas and questions. Workload is a count of open work, not a score."
       />
       <Surface className="mb-4 px-4 py-3">
-        <p className="text-sm leading-5 text-muted-foreground">
-          Permissions are simulated. The “Acting as” control in the top bar only attributes history in this browser. Production access control is not implemented.
+        <p className="text-[13px] leading-5 text-muted-foreground">
+          Permissions are simulated. The “Acting as” control in the top bar only
+          attributes history in this browser. Production access control is not
+          implemented.
         </p>
       </Surface>
-      <div className="grid gap-4 xl:grid-cols-3">
+      <div className="grid gap-3 xl:grid-cols-3">
         {state.team.map((member) => {
           const ideas = state.ideas.filter(
             (idea) =>
@@ -57,58 +59,92 @@ export function TeamView() {
           );
           return (
             <Surface key={member.id} className="p-4">
-              <h2 className="text-base font-semibold">{member.name}</h2>
-              <p className="text-sm text-muted-foreground">{member.role}</p>
-              <p className="mt-1 text-xs text-muted-foreground">{member.email}</p>
-              <dl className="mt-3 grid grid-cols-3 gap-2 text-center">
-                <div className="rounded-md bg-muted px-2 py-2">
-                  <dt className="text-[11px] text-muted-foreground">Active ideas</dt>
-                  <dd className="text-lg font-semibold tabular-nums">{ideas.length}</dd>
+              <h2 className="text-base font-semibold tracking-tight">
+                {member.name}
+              </h2>
+              <p className="text-[13px] text-muted-foreground">{member.role}</p>
+              <p className="mt-1 font-mono text-[11px] text-muted-foreground">
+                {member.email}
+              </p>
+              <dl className="mt-3 flex flex-wrap items-baseline gap-x-5 gap-y-1 border-y border-rule py-2">
+                <div>
+                  <dt className="inline text-[12px] font-medium tracking-tight text-muted-foreground">
+                    Ideas{" "}
+                  </dt>
+                  <dd className="inline text-xl font-semibold tabular-nums">
+                    {ideas.length}
+                  </dd>
                 </div>
-                <div className="rounded-md bg-muted px-2 py-2">
-                  <dt className="text-[11px] text-muted-foreground">Open questions</dt>
-                  <dd className="text-lg font-semibold tabular-nums">{questions.length}</dd>
+                <div>
+                  <dt className="inline text-[12px] font-medium tracking-tight text-muted-foreground">
+                    Questions{" "}
+                  </dt>
+                  <dd className="inline text-xl font-semibold tabular-nums">
+                    {questions.length}
+                  </dd>
                 </div>
-                <div className="rounded-md bg-muted px-2 py-2">
-                  <dt className="text-[11px] text-muted-foreground">Overdue</dt>
-                  <dd className="text-lg font-semibold tabular-nums">{overdue.length}</dd>
+                <div>
+                  <dt className="inline text-[12px] font-medium tracking-tight text-muted-foreground">
+                    Overdue{" "}
+                  </dt>
+                  <dd className="inline text-xl font-semibold tabular-nums text-primary">
+                    {overdue.length}
+                  </dd>
                 </div>
               </dl>
-              <h3 className="mt-4 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+              <h3 className="mt-4 text-[12px] font-semibold tracking-tight text-foreground">
                 Ideas
               </h3>
               <ul className="mt-1 space-y-2">
                 {ideas.length === 0 ? (
-                  <li className="text-sm text-muted-foreground">No active ideas.</li>
+                  <li className="text-sm text-muted-foreground">
+                    No active ideas.
+                  </li>
                 ) : (
                   ideas.map((idea) => (
-                    <li key={idea.id} className="flex items-start justify-between gap-2">
+                    <li
+                      key={idea.id}
+                      className="flex items-start justify-between gap-2"
+                    >
                       <div>
-                        <Link href={`/companies/${idea.id}`} className="text-sm font-medium hover:text-primary">
+                        <Link
+                          href={`/companies/${idea.id}`}
+                          className="text-sm font-medium hover:text-primary"
+                        >
                           {idea.companyName}
                         </Link>
-                        <p className="text-xs text-muted-foreground">{STAGE_LABELS[idea.stage]}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {STAGE_LABELS[idea.stage]}
+                        </p>
                       </div>
-                      <Button variant="ghost" size="sm" onClick={() => setIdeaTarget(idea)}>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setIdeaTarget(idea)}
+                      >
                         Reassign
                       </Button>
                     </li>
                   ))
                 )}
               </ul>
-              <h3 className="mt-4 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+              <h3 className="mt-4 text-[12px] font-semibold tracking-tight text-foreground">
                 Questions
               </h3>
               <ul className="mt-1 space-y-2">
                 {questions.length === 0 ? (
-                  <li className="text-sm text-muted-foreground">No open questions.</li>
+                  <li className="text-sm text-muted-foreground">
+                    No open questions.
+                  </li>
                 ) : (
                   questions.map(({ idea, question }) => (
                     <li key={question.id}>
                       <p className="text-sm leading-5">{question.question}</p>
                       <p className="text-xs text-muted-foreground">
                         {idea.companyName} · due {formatDate(question.dueDate)}
-                        {isQuestionOverdue(question.status, question.dueDate) ? " · Overdue" : ""}
+                        {isQuestionOverdue(question.status, question.dueDate)
+                          ? " · Overdue"
+                          : ""}
                       </p>
                       <Button
                         variant="ghost"
@@ -144,7 +180,11 @@ export function TeamView() {
         onClose={() => setQuestionTarget(null)}
         onSave={(ownerId) => {
           if (!questionTarget) return;
-          reassignQuestion(questionTarget.idea.id, questionTarget.question.id, ownerId);
+          reassignQuestion(
+            questionTarget.idea.id,
+            questionTarget.question.id,
+            ownerId,
+          );
           toast.success("Question owner updated.");
           setQuestionTarget(null);
         }}
@@ -164,7 +204,9 @@ function ReassignIdeaDialog({
   onClose: () => void;
   onSave: (analystId: string) => void;
 }) {
-  const [analystId, setAnalystId] = useState(idea?.leadAnalystId ?? team[0]?.id ?? "");
+  const [analystId, setAnalystId] = useState(
+    idea?.leadAnalystId ?? team[0]?.id ?? "",
+  );
   useEffect(() => {
     if (idea) setAnalystId(idea.leadAnalystId);
   }, [idea]);
@@ -180,7 +222,8 @@ function ReassignIdeaDialog({
         <DialogHeader>
           <DialogTitle>Reassign {idea?.companyName}</DialogTitle>
           <DialogDescription>
-            Changes the lead analyst on the research record. It does not change access rights.
+            Changes the lead analyst on the research record. It does not change
+            access rights.
           </DialogDescription>
         </DialogHeader>
         <Field label="Lead analyst" htmlFor="reassign-idea">
@@ -188,14 +231,19 @@ function ReassignIdeaDialog({
             id="reassign-idea"
             value={analystId || idea?.leadAnalystId || ""}
             onChange={setAnalystId}
-            options={team.map((member) => ({ value: member.id, label: `${member.name} — ${member.role}` }))}
+            options={team.map((member) => ({
+              value: member.id,
+              label: `${member.name} — ${member.role}`,
+            }))}
           />
         </Field>
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>
-          <Button onClick={() => analystId && onSave(analystId)}>Reassign</Button>
+          <Button onClick={() => analystId && onSave(analystId)}>
+            Reassign
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -235,7 +283,10 @@ function ReassignQuestionDialog({
             id="reassign-question"
             value={ownerId || target?.question.ownerId || ""}
             onChange={setOwnerId}
-            options={team.map((member) => ({ value: member.id, label: member.name }))}
+            options={team.map((member) => ({
+              value: member.id,
+              label: member.name,
+            }))}
           />
         </Field>
         <DialogFooter>

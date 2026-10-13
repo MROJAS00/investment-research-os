@@ -2,7 +2,12 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
-import { Field, NativeSelect, PageHeader, Surface } from "@/components/common/ui-bits";
+import {
+  Field,
+  NativeSelect,
+  PageHeader,
+  Surface,
+} from "@/components/common/ui-bits";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -59,8 +64,14 @@ export function SettingsView() {
       />
       <div className="grid gap-4 lg:grid-cols-2">
         <Surface className="space-y-4 p-4">
-          <h2 className="text-sm font-semibold">Workspace</h2>
-          <Field label="Demo workspace name" htmlFor="workspace-name" error={nameError}>
+          <h2 className="text-[13px] font-semibold tracking-tight text-foreground">
+            Workspace
+          </h2>
+          <Field
+            label="Demo workspace name"
+            htmlFor="workspace-name"
+            error={nameError}
+          >
             <Input
               id="workspace-name"
               value={name}
@@ -104,9 +115,12 @@ export function SettingsView() {
           </Field>
         </Surface>
         <Surface className="space-y-4 p-4">
-          <h2 className="text-sm font-semibold">Research data</h2>
+          <h2 className="text-[13px] font-semibold tracking-tight text-foreground">
+            Research data
+          </h2>
           <p className="text-sm leading-5 text-muted-foreground">
-            Exports include the fictional companies, theses, questions, documents, meetings, and history stored in this browser.
+            Exports include the fictional companies, theses, questions,
+            documents, meetings, and history stored in this browser.
           </p>
           <div className="flex flex-wrap gap-2">
             <Button variant="outline" onClick={exportJson}>
@@ -119,9 +133,14 @@ export function SettingsView() {
           <div className="border-t border-border pt-4">
             <h3 className="text-sm font-medium">Reset demo data</h3>
             <p className="mt-1 text-sm leading-5 text-muted-foreground">
-              Replaces every local change with the original Longview Capital dataset. This cannot be undone from the app.
+              Replaces every local change with the original Longview Capital
+              dataset. This cannot be undone from the app.
             </p>
-            <Button className="mt-3" variant="destructive" onClick={() => setConfirmReset(true)}>
+            <Button
+              className="mt-3"
+              variant="destructive"
+              onClick={() => setConfirmReset(true)}
+            >
               Reset demo data
             </Button>
           </div>
@@ -133,7 +152,9 @@ export function SettingsView() {
           <AlertDialogHeader>
             <AlertDialogTitle>Reset the demo workspace?</AlertDialogTitle>
             <AlertDialogDescription>
-              Ideas you added, thesis edits, committee decisions, and settings stored in this browser will be replaced by the original fictional dataset.
+              Ideas you added, thesis edits, committee decisions, and settings
+              stored in this browser will be replaced by the original fictional
+              dataset.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

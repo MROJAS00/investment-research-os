@@ -81,29 +81,51 @@ export function PipelineView() {
   }
 
   const sectors = [...new Set(state.ideas.map((idea) => idea.sector))].sort();
-  const countries = [...new Set(state.ideas.map((idea) => idea.country))].sort();
+  const countries = [
+    ...new Set(state.ideas.map((idea) => idea.country)),
+  ].sort();
 
   const filtered = useMemo(() => {
     const text = query.trim().toLowerCase();
     const rows = state.ideas.filter((idea) => {
       if (overdueOnly && !ideaAwaitsAction(idea)) return false;
-      if (stageFilter === "active" && (idea.stage === "invested" || idea.stage === "rejected")) {
+      if (
+        stageFilter === "active" &&
+        (idea.stage === "invested" || idea.stage === "rejected")
+      ) {
         return false;
       }
-      if (stageFilter !== "active" && stageFilter !== "all" && idea.stage !== stageFilter) {
+      if (
+        stageFilter !== "active" &&
+        stageFilter !== "all" &&
+        idea.stage !== stageFilter
+      ) {
         return false;
       }
       if (analyst !== "all" && idea.leadAnalystId !== analyst) return false;
       if (sector !== "all" && idea.sector !== sector) return false;
       if (country !== "all" && idea.country !== country) return false;
       if (priority !== "all" && idea.priority !== priority) return false;
-      if (text && !`${idea.companyName} ${idea.ticker}`.toLowerCase().includes(text)) {
+      if (
+        text &&
+        !`${idea.companyName} ${idea.ticker}`.toLowerCase().includes(text)
+      ) {
         return false;
       }
       return true;
     });
     return rows.sort((a, b) => compareIdeas(a, b, sort));
-  }, [state.ideas, overdueOnly, stageFilter, analyst, sector, country, priority, query, sort]);
+  }, [
+    state.ideas,
+    overdueOnly,
+    stageFilter,
+    analyst,
+    sector,
+    country,
+    priority,
+    query,
+    sort,
+  ]);
 
   const columns: Stage[] =
     stageFilter === "active" || stageFilter === "all"
@@ -116,11 +138,15 @@ export function PipelineView() {
 
   const showHistoricalNote = stageFilter === "all";
   const historical = showHistoricalNote
-    ? filtered.filter((idea) => idea.stage === "invested" || idea.stage === "rejected")
+    ? filtered.filter(
+        (idea) => idea.stage === "invested" || idea.stage === "rejected",
+      )
     : [];
   const boardIdeas =
     stageFilter === "all"
-      ? filtered.filter((idea) => idea.stage !== "invested" && idea.stage !== "rejected")
+      ? filtered.filter(
+          (idea) => idea.stage !== "invested" && idea.stage !== "rejected",
+        )
       : filtered;
 
   function onDrop(stage: Stage, ideaId: string) {
@@ -170,7 +196,9 @@ export function PipelineView() {
           <NativeSelect
             ariaLabel="Stage"
             value={stageFilter}
-            onChange={(value) => replace({ stage: value === "active" ? null : value })}
+            onChange={(value) =>
+              replace({ stage: value === "active" ? null : value })
+            }
             options={[
               { value: "active", label: "Active stages" },
               { value: "all", label: "All, including history" },
@@ -180,16 +208,23 @@ export function PipelineView() {
           <NativeSelect
             ariaLabel="Analyst"
             value={analyst}
-            onChange={(value) => replace({ analyst: value === "all" ? null : value })}
+            onChange={(value) =>
+              replace({ analyst: value === "all" ? null : value })
+            }
             options={[
               { value: "all", label: "All analysts" },
-              ...state.team.map((member) => ({ value: member.id, label: member.name })),
+              ...state.team.map((member) => ({
+                value: member.id,
+                label: member.name,
+              })),
             ]}
           />
           <NativeSelect
             ariaLabel="Sector"
             value={sector}
-            onChange={(value) => replace({ sector: value === "all" ? null : value })}
+            onChange={(value) =>
+              replace({ sector: value === "all" ? null : value })
+            }
             options={[
               { value: "all", label: "All sectors" },
               ...sectors.map((item) => ({ value: item, label: item })),
@@ -198,7 +233,9 @@ export function PipelineView() {
           <NativeSelect
             ariaLabel="Country"
             value={country}
-            onChange={(value) => replace({ country: value === "all" ? null : value })}
+            onChange={(value) =>
+              replace({ country: value === "all" ? null : value })
+            }
             options={[
               { value: "all", label: "All countries" },
               ...countries.map((item) => ({ value: item, label: item })),
@@ -207,7 +244,9 @@ export function PipelineView() {
           <NativeSelect
             ariaLabel="Priority"
             value={priority}
-            onChange={(value) => replace({ priority: value === "all" ? null : value })}
+            onChange={(value) =>
+              replace({ priority: value === "all" ? null : value })
+            }
             options={[
               { value: "all", label: "All priorities" },
               ...(Object.keys(PRIORITY_LABELS) as Priority[]).map((item) => ({
@@ -222,35 +261,41 @@ export function PipelineView() {
             ariaLabel="Sort"
             className="w-48"
             value={sort}
-            onChange={(value) => replace({ sort: value === "updated" ? null : value })}
+            onChange={(value) =>
+              replace({ sort: value === "updated" ? null : value })
+            }
             options={[
               { value: "updated", label: "Sort: last updated" },
               { value: "priority", label: "Sort: priority" },
               { value: "margin", label: "Sort: margin of safety" },
             ]}
           />
-          <div className="flex rounded-lg border border-border p-0.5">
+          <div className="flex items-baseline gap-3 border-b border-rule pb-0.5">
             <button
               type="button"
               className={cn(
-                "h-7 rounded-md px-2.5 text-xs font-medium",
-                view === "kanban" ? "bg-secondary text-foreground" : "text-muted-foreground",
-              )}
-              onClick={() => replace({ view: "kanban" })}
-              aria-pressed={view === "kanban"}
-            >
-              Board
-            </button>
-            <button
-              type="button"
-              className={cn(
-                "h-7 rounded-md px-2.5 text-xs font-medium",
-                view === "table" ? "bg-secondary text-foreground" : "text-muted-foreground",
+                "text-[13px]",
+                view === "table"
+                  ? "font-semibold text-primary"
+                  : "text-muted-foreground",
               )}
               onClick={() => replace({ view: "table" })}
               aria-pressed={view === "table"}
             >
               Table
+            </button>
+            <button
+              type="button"
+              className={cn(
+                "text-[13px]",
+                view === "kanban"
+                  ? "font-semibold text-primary"
+                  : "text-muted-foreground",
+              )}
+              onClick={() => replace({ view: "kanban" })}
+              aria-pressed={view === "kanban"}
+            >
+              Board
             </button>
           </div>
           {filtersActive ? (
@@ -309,16 +354,18 @@ export function PipelineView() {
                     if (id) onDrop(stage, id);
                   }}
                 >
-                  <div className="mb-2 flex items-baseline justify-between px-1">
-                    <h2 className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+                  <div className="mb-2 flex items-baseline justify-between border-b border-rule pb-1">
+                    <h2 className="text-[13px] font-semibold tracking-tight">
                       {STAGE_LABELS[stage]}
                     </h2>
-                    <span className="text-xs tabular-nums text-muted-foreground">{cards.length}</span>
+                    <span className="font-mono text-[11px] tabular-nums text-muted-foreground">
+                      {cards.length}
+                    </span>
                   </div>
                   <div
                     className={cn(
-                      "space-y-2 rounded-lg border border-dashed border-border bg-muted/40 p-2 min-h-24",
-                      draggingId && "border-primary/40",
+                      "min-h-24 space-y-3 border-l border-rule pl-2 transition-[background-color,outline] duration-200",
+                      draggingId && "stage-drop-active",
                     )}
                   >
                     {cards.length === 0 ? (
@@ -334,7 +381,9 @@ export function PipelineView() {
                           onDragStart={() => setDraggingId(idea.id)}
                           onDragEnd={() => setDraggingId(null)}
                           onEdit={() => setEditing(idea)}
-                          onStage={(stage) => stageController.requestStage(idea, stage)}
+                          onStage={(stage) =>
+                            stageController.requestStage(idea, stage)
+                          }
                         />
                       ))
                     )}
@@ -345,7 +394,9 @@ export function PipelineView() {
           </div>
           {historical.length > 0 ? (
             <div className="mt-4">
-              <h2 className="mb-2 text-sm font-semibold">Historical outcomes</h2>
+              <h2 className="mb-2 text-sm font-semibold">
+                Historical outcomes
+              </h2>
               <IdeaTable
                 ideas={historical}
                 onEdit={setEditing}
@@ -408,25 +459,22 @@ function IdeaCard({
   const analyst = memberById(state, idea.leadAnalystId);
   const margin = ideaMargin(idea);
   const openQuestions = unresolvedQuestions(idea).length;
-  const border =
-    idea.priority === "high"
-      ? "border-l-[#1e5c45]"
-      : idea.priority === "medium"
-        ? "border-l-[#8a6a32]"
-        : "border-l-border";
+  const showValuation = idea.priority !== "low";
+  const showAction = idea.priority === "high" || openQuestions > 0;
 
   return (
     <article
       className={cn(
-        "rounded-lg border border-border border-l-2 bg-card p-2.5 shadow-[0_1px_2px_rgba(28,25,23,0.04)]",
-        border,
+        "border-b border-rule pb-2.5 transition-colors",
+        idea.priority === "high" &&
+          "bg-[color-mix(in_srgb,var(--ink-wash)_35%,transparent)] px-1.5 pt-1",
         dragging && "opacity-60",
       )}
     >
       <div className="flex items-start gap-1">
         <button
           type="button"
-          className="mt-0.5 cursor-grab rounded p-0.5 text-muted-foreground hover:bg-muted"
+          className="mt-0.5 cursor-grab p-0.5 text-muted-foreground hover:text-foreground"
           draggable
           aria-label={`Drag ${idea.companyName} to another stage`}
           onDragStart={(event) => {
@@ -441,44 +489,54 @@ function IdeaCard({
         <div className="min-w-0 flex-1">
           <Link
             href={`/companies/${idea.id}`}
-            className="block truncate text-sm font-medium hover:text-primary"
+            className="block truncate text-[13px] font-semibold tracking-tight hover:text-primary"
           >
             {idea.companyName}
           </Link>
-          <p className="text-xs text-muted-foreground">
-            {idea.ticker} · {idea.country}
+          <p className="font-mono text-[11px] text-muted-foreground">
+            {idea.ticker} · {idea.country} · {idea.sector}
           </p>
         </div>
       </div>
-      <p className="mt-1 truncate text-xs text-muted-foreground">{idea.sector}</p>
-      <dl className="mt-2 grid grid-cols-3 gap-1 text-xs">
-        <div>
-          <dt className="text-muted-foreground">Price</dt>
-          <dd className="tabular-nums">
-            {formatMoney(idea.valuation.currentPrice, state.settings.currency)}
-          </dd>
-        </div>
-        <div>
-          <dt className="text-muted-foreground">Base FV</dt>
-          <dd className="tabular-nums">
-            {formatMoney(idea.valuation.baseFairValue, state.settings.currency)}
-          </dd>
-        </div>
-        <div>
-          <dt className="text-muted-foreground">MoS</dt>
-          <dd className={cn("tabular-nums", margin !== null && margin < 0 && "text-destructive")}>
-            {formatPercent(margin)}
-          </dd>
-        </div>
-      </dl>
-      <div className="mt-2 flex flex-wrap items-center gap-1">
+
+      {showValuation ? (
+        <p className="mt-1.5 font-mono text-[11px] tabular-nums text-foreground/80">
+          {formatMoney(idea.valuation.currentPrice, state.settings.currency)}
+          <span className="text-muted-foreground"> → </span>
+          {formatMoney(idea.valuation.baseFairValue, state.settings.currency)}
+          <span
+            className={cn(
+              "ml-2",
+              margin !== null && margin < 0
+                ? "text-destructive"
+                : "text-foreground",
+            )}
+          >
+            MoS {formatPercent(margin)}
+          </span>
+        </p>
+      ) : (
+        <p className="mt-1 text-[12px] text-muted-foreground">
+          {analyst?.initials} · {openQuestions} open q
+        </p>
+      )}
+
+      <div className="mt-1.5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
         <PriorityBadge priority={idea.priority} />
-        <span className="text-[11px] text-muted-foreground">{analyst?.initials}</span>
-        <span className="text-[11px] text-muted-foreground">
-          {openQuestions} open {openQuestions === 1 ? "question" : "questions"}
-        </span>
+        {showValuation ? (
+          <span className="font-mono text-[11px] text-muted-foreground">
+            {analyst?.initials}
+            {openQuestions > 0 ? ` · ${openQuestions} q` : ""}
+          </span>
+        ) : null}
       </div>
-      <p className="mt-2 line-clamp-2 text-xs leading-4 text-foreground/80">{idea.nextAction}</p>
+
+      {showAction ? (
+        <p className="mt-1.5 line-clamp-3 text-[12px] leading-5 text-foreground/80">
+          {idea.nextAction}
+        </p>
+      ) : null}
+
       <div className="mt-2 flex items-center gap-1">
         <NativeSelect
           ariaLabel={`Stage for ${idea.companyName}`}
@@ -508,7 +566,7 @@ function IdeaTable({
     <Surface className="overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full min-w-[1080px] text-left text-[13px]">
-          <thead className="border-b border-border text-xs text-muted-foreground">
+          <thead className="border-b border-rule text-[12px] text-muted-foreground">
             <tr>
               {[
                 "Company",
@@ -526,7 +584,10 @@ function IdeaTable({
                 "Open Qs",
                 "",
               ].map((heading) => (
-                <th key={heading} className="px-2 py-2 font-medium whitespace-nowrap">
+                <th
+                  key={heading || "actions"}
+                  className="px-2 py-2 font-medium whitespace-nowrap"
+                >
                   {heading}
                 </th>
               ))}
@@ -537,20 +598,36 @@ function IdeaTable({
               const analyst = memberById(state, idea.leadAnalystId);
               const margin = ideaMargin(idea);
               return (
-                <tr key={idea.id} className="border-b border-border last:border-0">
+                <tr
+                  key={idea.id}
+                  className="blotter-row border-b border-rule/70 last:border-0"
+                >
                   <td className="px-2 py-2">
-                    <Link href={`/companies/${idea.id}`} className="font-medium hover:text-primary">
+                    <Link
+                      href={`/companies/${idea.id}`}
+                      className="text-[13px] font-semibold tracking-tight hover:text-primary"
+                    >
                       {idea.companyName}
                     </Link>
-                    <div className="text-xs text-muted-foreground">{idea.ticker}</div>
+                    <div className="font-mono text-[11px] text-muted-foreground">
+                      {idea.ticker}
+                    </div>
                   </td>
-                  <td className="px-2 py-2 whitespace-nowrap">{idea.country}</td>
+                  <td className="px-2 py-2 whitespace-nowrap">
+                    {idea.country}
+                  </td>
                   <td className="px-2 py-2 whitespace-nowrap">{idea.sector}</td>
                   <td className="px-2 py-2 whitespace-nowrap tabular-nums">
-                    {formatMoney(idea.valuation.currentPrice, state.settings.currency)}
+                    {formatMoney(
+                      idea.valuation.currentPrice,
+                      state.settings.currency,
+                    )}
                   </td>
                   <td className="px-2 py-2 whitespace-nowrap tabular-nums">
-                    {formatMoney(idea.valuation.baseFairValue, state.settings.currency)}
+                    {formatMoney(
+                      idea.valuation.baseFairValue,
+                      state.settings.currency,
+                    )}
                   </td>
                   <td className="px-2 py-2 whitespace-nowrap tabular-nums">
                     {formatPercent(margin)}
@@ -564,24 +641,30 @@ function IdeaTable({
                       options={stageOptions(STAGES)}
                     />
                   </td>
-                  <td className="px-2 py-2 whitespace-nowrap">{analyst?.name}</td>
+                  <td className="px-2 py-2 whitespace-nowrap">
+                    {analyst?.name}
+                  </td>
                   <td className="px-2 py-2">
                     <PriorityBadge priority={idea.priority} />
                   </td>
                   <td className="px-2 py-2">
                     <ConvictionBadge conviction={idea.conviction} />
                   </td>
-                  <td className="px-2 py-2 whitespace-nowrap">
+                  <td className="px-2 py-2 font-mono text-[12px] whitespace-nowrap">
                     {formatDate(idea.thesis.lastSubstantiveReview)}
                   </td>
-                  <td className="max-w-56 px-2 py-2 whitespace-normal text-muted-foreground">
+                  <td className="max-w-56 px-2 py-2 text-[13px] leading-5 whitespace-normal text-foreground/75">
                     {idea.nextAction}
                   </td>
                   <td className="px-2 py-2 tabular-nums">
                     {unresolvedQuestions(idea).length}
                   </td>
                   <td className="px-2 py-2">
-                    <Button variant="ghost" size="sm" onClick={() => onEdit(idea)}>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => onEdit(idea)}
+                    >
                       Edit
                     </Button>
                   </td>
@@ -594,4 +677,3 @@ function IdeaTable({
     </Surface>
   );
 }
-

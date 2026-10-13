@@ -1,93 +1,146 @@
 "use client";
 
 import { cn } from "cn";
-import {
-  Bookmark,
-  LayoutDashboard,
-  Scale,
-  Settings,
-  Users,
-  Workflow,
-} from "lucide-react";
+import { Menu } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
+import { NativeSelect } from "@/components/common/ui-bits";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import { copyCurrentUrl } from "@/lib/export";
 import { useWorkspace } from "@/lib/store";
 
 const NAV = [
-  { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
-  { href: "/pipeline", label: "Idea Pipeline", icon: Workflow },
-  { href: "/watchlist", label: "Watchlist", icon: Bookmark },
-  { href: "/committee", label: "Investment Committee", icon: Scale },
-  { href: "/team", label: "Team & Research", icon: Users },
+  { href: "/dashboard", label: "Overview" },
+  { href: "/pipeline", label: "Pipeline" },
+  { href: "/watchlist", label: "Watchlist" },
+  { href: "/committee", label: "Committee" },
+  { href: "/team", label: "Team" },
+  { href: "/settings", label: "Settings" },
 ];
 
-export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
+function NavLinks({
+  onNavigate,
+  className,
+}: {
+  onNavigate?: () => void;
+  className?: string;
+}) {
   const pathname = usePathname();
-  const { state } = useWorkspace();
 
   return (
-    <div className="flex h-full flex-col">
-      <div className="px-4 pt-5 pb-4">
-        <Link href="/dashboard" className="block" onClick={onNavigate}>
-          <span className="text-[15px] font-semibold tracking-tight text-foreground">
-            Longview
-          </span>
-          <span className="mt-1 block text-xs leading-4 text-muted-foreground">
-            {state.settings.workspaceName}
-          </span>
-        </Link>
-      </div>
-      <nav className="flex flex-1 flex-col gap-0.5 px-2" aria-label="Primary">
-        {NAV.map((item) => {
-          const active =
-            pathname === item.href || pathname.startsWith(`${item.href}/`);
-          const Icon = item.icon;
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={onNavigate}
-              aria-current={active ? "page" : undefined}
-              className={cn(
-                "flex h-9 items-center gap-2.5 rounded-md px-2.5 text-sm",
-                active
-                  ? "bg-sidebar-accent font-medium text-sidebar-accent-foreground"
-                  : "text-foreground/80 hover:bg-muted",
-              )}
-            >
-              <Icon className="size-4 shrink-0" aria-hidden="true" />
-              {item.label}
-            </Link>
-          );
-        })}
-      </nav>
-      <div className="mt-auto border-t border-sidebar-border p-3">
-        <p className="px-1 pb-2 text-[11px] leading-4 text-muted-foreground">
-          Demo data. Companies, people, and figures are fictional.
-        </p>
-        <Link
-          href="/settings"
-          onClick={onNavigate}
-          aria-current={pathname === "/settings" ? "page" : undefined}
-          className={cn(
-            "flex h-9 items-center gap-2.5 rounded-md px-2 text-sm",
-            pathname === "/settings"
-              ? "bg-sidebar-accent font-medium text-sidebar-accent-foreground"
-              : "text-foreground/80 hover:bg-muted",
-          )}
-        >
-          <Settings className="size-4" aria-hidden="true" />
-          Settings
-        </Link>
-      </div>
-    </div>
+    <nav aria-label="Primary" className={cn("flex flex-wrap items-center gap-x-4 gap-y-1", className)}>
+      {NAV.map((item) => {
+        const active =
+          pathname === item.href ||
+          pathname.startsWith(`${item.href}/`) ||
+          (item.href === "/pipeline" && pathname.startsWith("/companies/"));
+        return (
+          <Link
+            key={item.href}
+            href={item.href}
+            onClick={onNavigate}
+            aria-current={active ? "page" : undefined}
+            data-active={active ? "true" : "false"}
+            className={cn(
+              "nav-link text-[13px] tracking-tight",
+              active
+                ? "font-semibold text-foreground"
+                : "font-medium text-foreground/55 hover:text-foreground",
+            )}
+          >
+            {item.label}
+          </Link>
+        );
+      })}
+    </nav>
   );
 }
 
-export function Sidebar() {
+/** Light product rail — 2020s console, not a newspaper masthead. */
+export function ResearchMasthead() {
+  const { state, updateSettings } = useWorkspace();
+  const [open, setOpen] = useState(false);
+  const acting = state.team.find((member) => member.id === state.settings.actingUserId);
+
+  async function copyLink() {
+    const ok = await copyCurrentUrl();
+    if (ok) toast.success("Page link copied.");
+    else toast.error("The link could not be copied from this browser.");
+  }
+
   return (
-    <aside className="fixed inset-y-0 left-0 z-30 hidden w-60 border-r border-sidebar-border bg-sidebar lg:block">
-      <SidebarNav />
-    </aside>
+    <header className="sticky top-0 z-30 border-b border-rule/90 bg-paper/90 backdrop-blur-[2px]">
+      <div className="mx-auto flex w-full max-w-[1440px] items-center gap-x-5 gap-y-2 px-4 py-2.5 sm:px-6 lg:px-8">
+        <div className="flex min-w-0 items-center gap-3">
+          <Link
+            href="/dashboard"
+            className="wordmark shrink-0 text-[1.35rem] leading-none font-semibold text-foreground"
+          >
+            Longview
+          </Link>
+          <span className="hidden h-4 w-px bg-rule sm:block" aria-hidden />
+          <span className="hidden truncate text-[12px] font-medium text-muted-foreground sm:inline">
+            {state.settings.workspaceName}
+          </span>
+        </div>
+
+        <div className="ml-2 hidden min-w-0 flex-1 lg:block">
+          <NavLinks />
+        </div>
+
+        <div className="ml-auto flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="icon"
+            className="lg:hidden"
+            aria-label="Open navigation"
+            onClick={() => setOpen(true)}
+          >
+            <Menu />
+          </Button>
+          <label className="sr-only" htmlFor="acting-user">
+            Acting as
+          </label>
+          <span className="hidden text-[12px] font-medium text-muted-foreground md:inline">
+            Acting as
+          </span>
+          <NativeSelect
+            id="acting-user"
+            ariaLabel="Acting as"
+            className="w-40 bg-paper"
+            value={state.settings.actingUserId}
+            onChange={(value) => updateSettings({ actingUserId: value })}
+            options={state.team.map((member) => ({
+              value: member.id,
+              label: member.name,
+            }))}
+          />
+          <span className="sr-only">
+            Current acting user is {acting?.name}. Permissions are simulated.
+          </span>
+          <Button variant="outline" size="sm" onClick={copyLink}>
+            Copy link
+          </Button>
+        </div>
+      </div>
+
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent side="top" className="border-b border-rule bg-paper p-4">
+          <SheetTitle className="text-base font-semibold">Navigate</SheetTitle>
+          <NavLinks className="mt-4 flex-col items-start gap-3" onNavigate={() => setOpen(false)} />
+        </SheetContent>
+      </Sheet>
+    </header>
   );
+}
+
+export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
+  return <NavLinks onNavigate={onNavigate} className="flex-col items-start gap-3 p-4" />;
+}
+
+export function Sidebar() {
+  return null;
 }

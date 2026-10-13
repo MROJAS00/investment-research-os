@@ -12,7 +12,10 @@ import {
   Surface,
   ThesisStatusBadge,
 } from "@/components/common/ui-bits";
-import { StageChangeDialog, useStageController } from "@/components/ideas/dialogs";
+import {
+  StageChangeDialog,
+  useStageController,
+} from "@/components/ideas/dialogs";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -51,10 +54,14 @@ export function WatchlistView() {
     const text = query.trim().toLowerCase();
     return state.ideas
       .filter((idea) => idea.stage === "watchlist")
-      .filter((idea) => (analyst === "all" ? true : idea.leadAnalystId === analyst))
+      .filter((idea) =>
+        analyst === "all" ? true : idea.leadAnalystId === analyst,
+      )
       .filter((idea) => (kind === "all" ? true : idea.waitKind === kind))
       .filter((idea) =>
-        text ? `${idea.companyName} ${idea.ticker}`.toLowerCase().includes(text) : true,
+        text
+          ? `${idea.companyName} ${idea.ticker}`.toLowerCase().includes(text)
+          : true,
       )
       .sort((a, b) => {
         if (sort === "priority") {
@@ -68,7 +75,9 @@ export function WatchlistView() {
           if (right === null) return -1;
           if (left !== right) return right - left;
         }
-        return b.thesis.lastSubstantiveReview.localeCompare(a.thesis.lastSubstantiveReview);
+        return b.thesis.lastSubstantiveReview.localeCompare(
+          a.thesis.lastSubstantiveReview,
+        );
       });
   }, [state.ideas, analyst, kind, query, sort]);
 
@@ -91,7 +100,10 @@ export function WatchlistView() {
           onChange={setAnalyst}
           options={[
             { value: "all", label: "All analysts" },
-            ...state.team.map((member) => ({ value: member.id, label: member.name })),
+            ...state.team.map((member) => ({
+              value: member.id,
+              label: member.name,
+            })),
           ]}
         />
         <NativeSelect
@@ -118,7 +130,9 @@ export function WatchlistView() {
         />
       </Surface>
       <IllustrativeNote>
-        “Cheap vs illustrative valuation” means the base-case margin of safety meets the minimum stored on the idea. “Thesis deteriorated” is a research judgement, not a price signal.
+        “Cheap vs illustrative valuation” means the base-case margin of safety
+        meets the minimum stored on the idea. “Thesis deteriorated” is a
+        research judgement, not a price signal.
       </IllustrativeNote>
 
       {rows.length === 0 ? (
@@ -137,7 +151,7 @@ export function WatchlistView() {
         <Surface className="mt-4 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[1100px] text-left text-[13px]">
-              <thead className="border-b border-border text-xs text-muted-foreground">
+              <thead className="border-b border-rule text-[12px] text-muted-foreground">
                 <tr>
                   {[
                     "Company",
@@ -152,7 +166,10 @@ export function WatchlistView() {
                     "Last reviewed",
                     "",
                   ].map((heading) => (
-                    <th key={heading} className="px-2 py-2 font-medium whitespace-nowrap">
+                    <th
+                      key={heading || "actions"}
+                      className="px-2 py-2 font-medium whitespace-nowrap"
+                    >
                       {heading}
                     </th>
                   ))}
@@ -163,7 +180,10 @@ export function WatchlistView() {
                   const analystName = memberById(state, idea.leadAnalystId);
                   const cheap = cheapVersusValuation(idea);
                   return (
-                    <tr key={idea.id} className="border-b border-border align-top last:border-0">
+                    <tr
+                      key={idea.id}
+                      className="blotter-row border-b border-border/80 align-top last:border-0"
+                    >
                       <td className="px-2 py-2">
                         <Link
                           href={`/companies/${idea.id}`}
@@ -171,31 +191,46 @@ export function WatchlistView() {
                         >
                           {idea.companyName}
                         </Link>
-                        <div className="text-xs text-muted-foreground">{idea.ticker}</div>
+                        <div className="font-mono text-[11px] text-muted-foreground">
+                          {idea.ticker}
+                        </div>
                       </td>
                       <td className="px-2 py-2 whitespace-nowrap tabular-nums">
-                        {formatMoney(idea.valuation.currentPrice, state.settings.currency)}
+                        {formatMoney(
+                          idea.valuation.currentPrice,
+                          state.settings.currency,
+                        )}
                       </td>
                       <td className="px-2 py-2 whitespace-nowrap tabular-nums">
-                        {formatMoney(idea.valuation.baseFairValue, state.settings.currency)}
+                        {formatMoney(
+                          idea.valuation.baseFairValue,
+                          state.settings.currency,
+                        )}
                       </td>
                       <td className="px-2 py-2 whitespace-nowrap tabular-nums">
-                        {formatMoney(idea.valuation.targetEntry, state.settings.currency)}
+                        {formatMoney(
+                          idea.valuation.targetEntry,
+                          state.settings.currency,
+                        )}
                       </td>
                       <td className="px-2 py-2 whitespace-nowrap tabular-nums">
                         {formatPercent(ideaMargin(idea))}
                       </td>
-                      <td className="px-2 py-2 whitespace-nowrap">{analystName?.name}</td>
+                      <td className="px-2 py-2 whitespace-nowrap">
+                        {analystName?.name}
+                      </td>
                       <td className="px-2 py-2">
                         <ThesisStatusBadge status={idea.thesis.status} />
                       </td>
                       <td className="max-w-xs px-2 py-2 whitespace-normal">
                         <div className="mb-1 flex flex-wrap gap-1">
                           <PriorityBadge priority={idea.priority} />
-                          <span className="inline-flex h-5 items-center rounded-md bg-muted px-1.5 text-[11px] font-medium">
-                            {idea.waitKind ? WAIT_KIND_LABELS[idea.waitKind] : "Unspecified"}
+                          <span className="text-[12px] font-medium tracking-tight text-muted-foreground">
+                            {idea.waitKind
+                              ? WAIT_KIND_LABELS[idea.waitKind]
+                              : "Unspecified"}
                           </span>
-                          <span className="inline-flex h-5 items-center rounded-md bg-secondary px-1.5 text-[11px] font-medium">
+                          <span className="text-[12px] font-medium tracking-tight text-foreground/70">
                             {idea.waitKind === "thesis"
                               ? "Thesis deteriorated"
                               : cheap
@@ -203,7 +238,9 @@ export function WatchlistView() {
                                 : "Not cheap vs illustrative valuation"}
                           </span>
                         </div>
-                        <p className="text-muted-foreground">{idea.waitReason}</p>
+                        <p className="text-muted-foreground">
+                          {idea.waitReason}
+                        </p>
                       </td>
                       <td className="max-w-xs px-2 py-2 whitespace-normal text-muted-foreground">
                         {idea.nextReviewTrigger || "—"}
@@ -213,13 +250,22 @@ export function WatchlistView() {
                       </td>
                       <td className="px-2 py-2 whitespace-nowrap">
                         <div className="flex flex-col items-start gap-1">
-                          <Button variant="ghost" size="sm" onClick={() => setEditing(idea)}>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setEditing(idea)}
+                          >
                             Update watch
                           </Button>
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => stageController.requestStage(idea, "deep_research")}
+                            onClick={() =>
+                              stageController.requestStage(
+                                idea,
+                                "deep_research",
+                              )
+                            }
                           >
                             Return to research
                           </Button>
@@ -311,13 +357,19 @@ function WatchDialog({
               id="watch-kind"
               value={waitKind}
               onChange={(value) => setWaitKind(value as WaitKind)}
-              options={(Object.keys(WAIT_KIND_LABELS) as WaitKind[]).map((item) => ({
-                value: item,
-                label: WAIT_KIND_LABELS[item],
-              }))}
+              options={(Object.keys(WAIT_KIND_LABELS) as WaitKind[]).map(
+                (item) => ({
+                  value: item,
+                  label: WAIT_KIND_LABELS[item],
+                }),
+              )}
             />
           </Field>
-          <Field label="Reason for waiting" htmlFor="watch-reason" error={error}>
+          <Field
+            label="Reason for waiting"
+            htmlFor="watch-reason"
+            error={error}
+          >
             <Textarea
               id="watch-reason"
               className="min-h-24"
@@ -341,7 +393,9 @@ function WatchDialog({
             onClick={() => {
               if (!idea) return;
               if (waitReason.trim().length < 10) {
-                setError("Describe why it is waiting, in at least 10 characters.");
+                setError(
+                  "Describe why it is waiting, in at least 10 characters.",
+                );
                 return;
               }
               if (!Number.isFinite(targetEntry) || targetEntry < 0) {
@@ -363,4 +417,3 @@ function WatchDialog({
     </Dialog>
   );
 }
-

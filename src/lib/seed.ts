@@ -1711,7 +1711,7 @@ export function createSeedState(): AppState {
     settings: {
       workspaceName: "Longview Capital — Demo",
       currency: "EUR",
-      defaultPipelineView: "kanban",
+      defaultPipelineView: "table",
       actingUserId: "elena",
     },
     seededAt,
